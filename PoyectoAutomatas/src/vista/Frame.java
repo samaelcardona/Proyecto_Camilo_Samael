@@ -708,7 +708,7 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSeleccionarAutomataTablaActionPerformed
 
     private void btnMostrarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarTablaActionPerformed
-        System.out.println("Hola papi");
+        System.out.println("Hola papi riqui");
     }//GEN-LAST:event_btnMostrarTablaActionPerformed
 
     private void txtLenguajeQuintuplaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLenguajeQuintuplaActionPerformed
