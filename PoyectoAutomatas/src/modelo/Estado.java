@@ -15,7 +15,7 @@ x y:Son las posiciones del estado en un area especifica para graficar.
  *
  * @author Samael
  */
-public class Estado {
+public class Estado implements java.io.Serializable{
     
     String nombre;
     boolean esInicial;

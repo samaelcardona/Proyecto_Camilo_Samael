@@ -19,7 +19,7 @@ estado aceptador: se refiere una lista de estados que son aceptadores en el  aut
  *
  * @author Samael
  */
-public class Automata {
+public class Automata implements java.io.Serializable{
  
     String nombre;
     String tipoAutomata;

@@ -16,7 +16,7 @@ estado B:es un estado para una transicion en donde este sera la posicion final d
  *
  * @author Samael
  */
-public class Transicion {
+public class Transicion implements java.io.Serializable {
     
     Estado estadoA;
     String simbolo;
