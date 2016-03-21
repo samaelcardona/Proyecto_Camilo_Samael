@@ -30,14 +30,11 @@ public class MetodosMemoria implements java.io.Serializable
 
     public void escritura() throws IOException
     {
-        for (int i = 0; i < mtc.getAutomatas().size(); i++) 
-        {
             LinkedList<Automata> aut= new LinkedList<>();
             aut=mtc.getAutomatas();
             ObjectOutputStream salida=new ObjectOutputStream(new FileOutputStream("listaDeAutomatas.obj"));
             salida.writeObject(aut);
-            salida.close();   
-        }
+            salida.close();      
     }
     
     public  void lectura() throws IOException, ClassNotFoundException
@@ -45,7 +42,6 @@ public class MetodosMemoria implements java.io.Serializable
       ObjectInputStream entrada=new ObjectInputStream(new FileInputStream("listaDeAutomatas.obj"));
       LinkedList<Automata> aut=new LinkedList<>();        
       aut=(LinkedList<Automata>)entrada.readObject();
-      //Automata automatanuevo=new Automata(aut.getNombre(), aut.getTipoAutomata(), aut.getEstados(),aut.getLenguaje(), aut.getEstadoInicial(), aut.getEstadoAceptador());
       mtc.setAutomatas(aut);     
       entrada.close();
        

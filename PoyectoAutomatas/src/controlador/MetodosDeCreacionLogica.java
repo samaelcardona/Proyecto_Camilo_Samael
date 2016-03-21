@@ -915,9 +915,65 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
             }   
    }
     
-    public LinkedList<Automata> getAutomatas() {
-        return automatas;
-    }  
+    //Se recorre el automata con el nombre que se le envio para crearle la revera cuando se encuentra:
+    //como creamos un nuevo automata mandando los parametros, tenemos que recorrer el LinkedList de estados aceptadores
+    //estados y el lenguaje
+    //1-Se empieza con el caso mas sencillo que es cuando el automata tine solo un aceptador o sea  
+    //if (automatas.get(i).getEstadoAceptador().size() == 1) se hace que el estado inicial sea acptador, el estado aceptador inical
+    // y se envia los parametos para que se cree el automata
+    //posteriormente nos encargamos de las trnasmiciones, se llama el metodo agregarTransicionAFN_O_AFNE por cada transicion que el
+    //automata tiene, intercambiando A= ya va a ser el B  el simbolo el mismo B= ya va a ser A
+    //2- se sigue con el caso mas complicado que es cuando un automata tiene dos o mas acetadores, esto es porque 
+    //los estados aceptadores pasan a ser inicial,  cambian sentido de transiciones y el inicial pasa a ser aceptador
+    //se  cre un automata con los estados aceptadores nuevos, ls estados nuevos y el lenguaje nuevo
+    //se tiene que crear un estado nuevo y se hace de la siguiente forma estadosNuevos += "q";
+    //cuando ya se tiene el automata creado se hacen las tranciciones
+    // finalmente,como los estados aceptadores pasana a ser iniciales  solo se puede uno se manda una transicion e a q(El nuevo estado)
+    public void metodoRversa(String nombreAutomata) {
+        for (int i = 0; i < automatas.size(); i++) {
+            if (automatas.get(i).getNombre().equals(nombreAutomata)) {
+
+                String estadosAceptadoresNueva = "";
+                String estadosNuevos = "";
+                String lenguajeNuevo = "";
+
+                for (int c = 0; c < automatas.get(i).getEstados().size(); c++) {
+                    estadosNuevos += automatas.get(i).getEstados().get(c).getNombre() + ",";
+                }
+                for (int v = 0; v < automatas.get(i).getLenguaje().size(); v++) {
+                    lenguajeNuevo += automatas.get(i).getLenguaje().get(v) + ",";
+                }
+
+                if (automatas.get(i).getEstadoAceptador().size() == 1) {
+                    String estadoInicial = automatas.get(i).getEstadoAceptador().get(0).getNombre();
+
+                    crearAutomaatAFN_E(automatas.get(i).getNombre() + "_Reversa", "AFND", estadosNuevos, lenguajeNuevo, estadoInicial, automatas.get(i).getEstadoInicial().getNombre());
+
+                    //para la lista de transiciones
+                    for (int t = 0; t < automatas.get(i).getTransiciones().size(); t++) {
+                        agregarTransicionAFN_O_AFNE(automatas.get(i).getNombre() + "_Reversa", automatas.get(i).getTransiciones().get(t).getEstadoB().getNombre(), automatas.get(i).getTransiciones().get(t).getSimbolo(), automatas.get(i).getTransiciones().get(t).getEstadoA().getNombre());
+                    }
+
+                } else {
+                    for (int j = 0; j < automatas.get(i).getEstadoAceptador().size(); j++) {
+                        estadosAceptadoresNueva += automatas.get(i).getEstadoAceptador().get(j).getNombre() + ",";
+                    }
+                    estadosNuevos += "q";
+                    System.out.println("Estados Nuevos: " + estadosNuevos);
+                    crearAutomaatAFN_E(automatas.get(i).getNombre() + "_Reversa", "AFND", estadosNuevos, lenguajeNuevo, "q", automatas.get(i).getEstadoInicial().getNombre());
+
+                    for (int g = 0; g < automatas.get(i).getTransiciones().size(); g++) {
+                        agregarTransicionAFN_O_AFNE(automatas.get(i).getNombre() + "_Reversa", automatas.get(i).getTransiciones().get(g).getEstadoB().getNombre(), automatas.get(i).getTransiciones().get(g).getSimbolo(), automatas.get(i).getTransiciones().get(g).getEstadoA().getNombre());
+                    }
+                    for (int h = 0; h < automatas.get(i).getEstadoAceptador().size(); h++) {
+                        agregarTransicionAFN_O_AFNE(automatas.get(i).getNombre() + "_Reversa", automatas.get(i).getEstadoAceptador().get(h).getNombre(), "E", "q");
+                    }
+                }
+
+            }
+
+        }
+    }
     
      
     
@@ -925,5 +981,9 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
 
     public void setAutomatas(LinkedList<Automata> automatas) {
         this.automatas = automatas;
+    }
+    
+    public LinkedList<Automata> getAutomatas() {
+        return automatas;
     }
 }
