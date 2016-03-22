@@ -388,7 +388,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
     //retorna un true si el estado si existe en la lista de estados
     public boolean verificarEstadoTransicion(LinkedList<Estado> listadeEstados, Estado estado) {
         boolean primeraVerificacion = false;
-
+        
         for (int i = 0; i < listadeEstados.size(); i++) {
             if (listadeEstados.get(i).getNombre().equals(estado.getNombre())) {
                 primeraVerificacion = true;
