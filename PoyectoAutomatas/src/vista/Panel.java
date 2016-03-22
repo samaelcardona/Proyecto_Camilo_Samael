@@ -42,6 +42,7 @@ public class Panel extends javax.swing.JPanel {
         if (automata.getNombre() != null) {
             graficarUno(g);
         }
+        //g.drawArc(WIDTH, WIDTH, WIDTH, HEIGHT, contador, cadaCuanto);
 
         repaint();
     }
@@ -57,13 +58,12 @@ public class Panel extends javax.swing.JPanel {
             cadaCuanto = (500 / automata.getEstados().size());
         }
         
-        //g.dra
-        //graficarTransicones(g);
+        
+        graficarTransicones(g);
     }
 
     public void graficarTransicones(Graphics g) {
         int contador = (int)(automata.getEstados().size()/automata.getLenguaje().size());
-        System.out.println("cuanto: "+contador);
         for (int i = 0; i < automata.getTransiciones().size(); i++) {
 
             //System.out.println("Aqui: "+ automata.getEstados().indexOf(automata.getTransiciones().get(i).getEstadoB())+" la i esta en"+i+" Se busco el estado : "+automata.getTransiciones().get(i).getEstadoB().getNombre());
