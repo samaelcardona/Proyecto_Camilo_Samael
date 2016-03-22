@@ -966,8 +966,9 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
                         agregarTransicionAFN_O_AFNE(automatas.get(i).getNombre() + "_Reversa", automatas.get(i).getTransiciones().get(g).getEstadoB().getNombre(), automatas.get(i).getTransiciones().get(g).getSimbolo(), automatas.get(i).getTransiciones().get(g).getEstadoA().getNombre());
                     }
                     for (int h = 0; h < automatas.get(i).getEstadoAceptador().size(); h++) {
-                        agregarTransicionAFN_O_AFNE(automatas.get(i).getNombre() + "_Reversa", automatas.get(i).getEstadoAceptador().get(h).getNombre(), "E", "q");
-                    }
+                        //agregarTransicionAFN_O_AFNE(automatas.get(i).getNombre() + "_Reversa", automatas.get(i).getEstadoAceptador().get(h).getNombre(), "E", "q");
+                        agregarTransicionAFN_O_AFNE(automatas.get(i).getNombre() + "_Reversa","q", "E", automatas.get(i).getEstadoAceptador().get(h).getNombre());
+                    }   
                 }
 
             }
