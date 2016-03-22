@@ -120,6 +120,8 @@ public class Frame extends javax.swing.JFrame {
         jComboBox10 = new javax.swing.JComboBox();
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jComboBox11 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -423,6 +425,13 @@ public class Frame extends javax.swing.JFrame {
             }
         });
 
+        jToggleButton1.setText("jToggleButton1");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
@@ -551,9 +560,10 @@ public class Frame extends javax.swing.JFrame {
                                                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addGroup(panel1Layout.createSequentialGroup()
                                                         .addGap(29, 29, 29)
-                                                        .addComponent(jLabel2)
-                                                        .addGap(48, 48, 48))
-                                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(jLabel2))
+                                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jToggleButton1)
+                                                    .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(18, 18, 18)
                                                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(cbComplementoAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -707,7 +717,11 @@ public class Frame extends javax.swing.JFrame {
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton10))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jToggleButton1)
+                .addGap(27, 27, 27))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -724,7 +738,7 @@ public class Frame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(40, 40, 40))
+                .addContainerGap())
         );
 
         pack();
@@ -1022,6 +1036,11 @@ public class Frame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        Automata aut=mcl.devolverAutomata(jComboBox11.getSelectedItem()+"");
+        panel1.setAutomata(aut);
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
     private void metodoComboBox(){
             cbSeleccionarAutomata.removeAllItems();
             cbQuintupla.removeAllItems();
@@ -1039,7 +1058,7 @@ public class Frame extends javax.swing.JFrame {
             jComboBox9.removeAllItems();
             jComboBox10.removeAllItems();
             jComboBox1.removeAllItems();
-            
+            jComboBox11.removeAllItems();
                     
             for (int i = 0; i < mcl.getAutomatas().size(); i++) 
             {
@@ -1058,7 +1077,7 @@ public class Frame extends javax.swing.JFrame {
                 jComboBox7.addItem(""+mcl.getAutomatas().get(i).getNombre());
                 jComboBox9.addItem(""+mcl.getAutomatas().get(i).getNombre());
                 jComboBox10.addItem(""+mcl.getAutomatas().get(i).getNombre());
-               
+                jComboBox11.addItem(""+mcl.getAutomatas().get(i).getNombre());
                 
                 
             }
@@ -1146,6 +1165,7 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox jComboBox10;
+    private javax.swing.JComboBox<String> jComboBox11;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
@@ -1161,6 +1181,7 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel jblAfd;
     private javax.swing.JLabel jblAfn;
     private javax.swing.JLabel jblAfnd_e;

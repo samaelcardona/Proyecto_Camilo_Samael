@@ -975,6 +975,19 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
         }
     }
     
+    
+    // Metodo para que me devuelva el automata segun el nombre
+    
+    
+    public Automata devolverAutomata(String nombreaAutomata){
+        for (int i = 0; i < automatas.size(); i++) {
+            if(automatas.get(i).getNombre().equals(nombreaAutomata)){
+                return automatas.get(i);
+            }
+        }
+      return null;
+    }
+    
      
     
     ///fin de la clase MetodosDeCreacionLogica

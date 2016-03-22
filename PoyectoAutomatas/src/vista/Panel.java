@@ -8,6 +8,9 @@ package vista;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import modelo.Automata;
+    
+    
+
 
 /**
  *
