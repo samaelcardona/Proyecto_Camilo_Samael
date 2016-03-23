@@ -877,6 +877,9 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
     }
 
     //Metodo para cambiar los nombres de los estados
+    //  ejemplo automataA: -> A---o-->B--1-->D   automataB: -> E---o-->F--1-->G
+    //  resultado -> A0---o-->B1--1-->D2   automataB: -> E3---o-->F4--1-->G5
+    // y se agregan a la lista de automatas 
     public void cambiarNombres(Automata automataA, Automata automataB) {
 
         String estadosNuevos = "";
@@ -935,6 +938,15 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
     }
 
     //Metodo de la concatenacion Thompson
+    //primero se  buscan el automataA y el automataB que se mandaron desde el fram en los combox
+    // se verifica que los enguajes sean iguales para poder realizar la concatenacion de lo contraio no se podria
+    // se cambian los nombre de los estados de los automatas, añadiendole el indice cambiarNombres(automataA, automataB);
+    //se adquieren la lista de los estados los aceptadores
+    //lenguajeAFD_E en el caso de este es por si el automata es afd_e para no agregarle el elemento e ya que se repitiria si se hace
+    // ya que al momento de decir que lo cree este  ya se lo agrega
+    // y se toman dvarios casos si es crearAutomaatAFD_O_AFN o si es crearAutomaatAFN_E
+    // tambien se evalua si tiene dos aceptadores  automatas.get(i).getEstadoAceptador().size() == 1 de ser cierto, se crea un nuevo 
+    //estado con sus transiciones E
     public void metodoConcatenacion(String automataUno, String automataDos) {
         //System.out.println("Automata uno: "+automataUno+" Automata Dos: "+automataDos);
         Automata automataA = devolverAutomata(automataUno);
@@ -956,7 +968,6 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                 }
             }
             lenguajeAFD_E = lenguajeNuevo;
-            System.out.println("lenguajeAFD_E: " + lenguajeAFD_E);
             lenguajeNuevo += "E";
 
             for (int z = 0; z < automatas.size(); z++) {
