@@ -664,7 +664,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
     ///minimizar
     
     ///verificar marcacnion para minimizar
-        public LinkedList<Estado[]> verificarMarcacion(Automata atver, Estado[] vec1, Estado[] vec2, int arribai, int abajoi)
+        public LinkedList<Estado> verificarMarcacion(Automata atver, Estado[] vec1, Estado[] vec2, int arribai, int abajoi)
         {
             ////posiciones para las transiciones
             
@@ -674,7 +674,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
             System.out.println("vec2 " +vec2[abajoi].getNombre()+"\n"+"-----"+"\n" );    
             
             ////esta lista se crea para que guarde los estados por cada simbolo que encuentre
-            LinkedList<Estado[]> listaporsimbolos = new LinkedList<Estado[]>();
+            LinkedList<Estado> listaporsimbolos = new LinkedList<Estado>();
 
             ///// aca verifico por cada simbolo si con el mismo simbolo 
             ////salen los dos estados ... verifico si estan vacios
@@ -704,12 +704,8 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
 
                 if (posiciontrans1 != -5 && posiciontrans2 != -5)
                 {
-                    Estado[] estados = new Estado[2];
-
-                    estados[0] = atver.getTransiciones().get(posiciontrans1).getEstadoB();
-                    estados[1] = atver.getTransiciones().get(posiciontrans2).getEstadoB();
-
-                    listaporsimbolos.addLast(estados);
+                    listaporsimbolos.add(atver.getTransiciones().get(posiciontrans1).getEstadoB());
+                    listaporsimbolos.add(atver.getTransiciones().get(posiciontrans2).getEstadoB());              
                 }
 
             }
@@ -841,7 +837,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
             
             
             ////marcar verificando
-            for (int ite = 0; ite < 10;ite++)
+            for (int ite = 0; ite < 5;ite++)
             {
                     for (int i = 0; i < arriba.length; i++)
                     {
@@ -850,11 +846,14 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
                             if (matriz[i][j].equals("0"))
                             {
 
-                                LinkedList<Estado[]> listaDeverificarMarcardo = new LinkedList<Estado[]>();
+                                LinkedList<Estado> listaDeverificarMarcardo = new LinkedList<Estado>();
 
                                 listaDeverificarMarcardo = verificarMarcacion(automata, arriba,lateral, j, i);
                                 
-                                
+                                for (int k = 0; k < listaDeverificarMarcardo.size(); k++) 
+                                {
+                                        System.out.println("lista"+listaDeverificarMarcardo.get(i).getNombre());
+                                }
                                 
                              
 
@@ -870,21 +869,18 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
 
                                         for (int y = 0; y < arriba.length; y++)
                                         {
-                                            if (listaDeverificarMarcardo.get(x)[0].getNombre().equals(arriba[y].getNombre()))
+                                            if (listaDeverificarMarcardo.get(0).getNombre().equals(arriba[y].getNombre()))
                                             {
                                                 marcadoposarriba = y;
                                             }
-
-                                        }
-
-                                        for (int y = 0; y < lateral.length; y++)
-                                        {
-                                            if (listaDeverificarMarcardo.get(x)[1].getNombre().equals(lateral[y].getNombre()))
+                                            if (listaDeverificarMarcardo.get(1).getNombre().equals(lateral[y].getNombre()))
                                             {
                                                 marcadoposabajo = y;
                                             }
 
                                         }
+
+                                        
                                         if(marcadoposabajo!=-5&&marcadoposarriba!=-5)
                                         {
                                             if (matriz[marcadoposabajo][marcadoposarriba].equals("0") && !matriz[marcadoposabajo][marcadoposarriba].equals("N"))
@@ -898,7 +894,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
                                 }
                             }
                             
-                            System.out.println("smamsasm"+matriz[i][j]);
+                           // System.out.println("smamsasm"+matriz[i][j]);
                         }
              
                 }

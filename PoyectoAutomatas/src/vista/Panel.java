@@ -46,6 +46,15 @@ public class Panel extends javax.swing.JPanel {
 
         repaint();
     }
+    
+    
+    public void asignarXY()
+    {
+        
+        
+    }
+    
+    
 
     public void graficarUno(Graphics g) {
         int cadaCuanto = 0;
