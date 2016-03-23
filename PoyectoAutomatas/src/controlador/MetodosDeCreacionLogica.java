@@ -804,7 +804,9 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                     estadosNuevos += automatas.get(i).getEstados().get(c).getNombre() + ",";
                 }
                 for (int v = 0; v < automatas.get(i).getLenguaje().size(); v++) {
-                    lenguajeNuevo += automatas.get(i).getLenguaje().get(v) + ",";
+                    if (!automatas.get(i).getLenguaje().get(v).equalsIgnoreCase("E")) {
+                        lenguajeNuevo += automatas.get(i).getLenguaje().get(v) + ",";
+                    }
                 }
 
                 if (automatas.get(i).getEstadoAceptador().size() == 1) {
@@ -895,15 +897,10 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
             inicioSegundoFor = j + 1;
         }
 
-        crearAutomaatAFD_O_AFN(automataA.getNombre() + "_Complemento", "AFD", estadosNuevos, lenguajeNuevo, automataA.getEstadoInicial().getNombre() + "" + automataA.getEstados().indexOf(automataA.getEstadoInicial()), estadosAceptadoresNueva);
+        crearAutomaatAFD_O_AFN(automataA.getNombre() + "_ComplementoP", "AFD", estadosNuevos, lenguajeNuevo, automataA.getEstadoInicial().getNombre() + "" + automataA.getEstados().indexOf(automataA.getEstadoInicial()), estadosAceptadoresNueva);
 
-////        for (int i = 0; i < automataA.getTransiciones().size(); i++) {
-////            System.out.println("A: " + automataA.getTransiciones().get(i).getEstadoA().getNombre() + automataA.getEstados().indexOf(automataA.getTransiciones().get(i).getEstadoA()) + " lo que busco: " + automataA.getTransiciones().get(i).getEstadoA().getNombre());
-////            System.out.println("lenguaje" + automataA.getTransiciones().get(i).getSimbolo());
-////            System.out.println("B: " + automataA.getTransiciones().get(i).getEstadoB().getNombre() + automataA.getEstados().indexOf(automataA.getTransiciones().get(i).getEstadoB()) + " lo que busco: " + automataA.getTransiciones().get(i).getEstadoB().getNombre());
-////        }
         for (int i = 0; i < automataA.getTransiciones().size(); i++) {
-            agregarTransicionAFD(automataA.getNombre() + "_Complemento", automataA.getTransiciones().get(i).getEstadoA().getNombre() + automataA.getEstados().indexOf(automataA.getTransiciones().get(i).getEstadoA()), automataA.getTransiciones().get(i).getSimbolo(), automataA.getTransiciones().get(i).getEstadoB().getNombre() + automataA.getEstados().indexOf(automataA.getTransiciones().get(i).getEstadoB()));
+            agregarTransicionAFD(automataA.getNombre() + "_ComplementoP", automataA.getTransiciones().get(i).getEstadoA().getNombre() + automataA.getEstados().indexOf(automataA.getTransiciones().get(i).getEstadoA()), automataA.getTransiciones().get(i).getSimbolo(), automataA.getTransiciones().get(i).getEstadoB().getNombre() + automataA.getEstados().indexOf(automataA.getTransiciones().get(i).getEstadoB()));
         }
 
         estadosNuevos = "";
@@ -920,17 +917,21 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
             //inicioSegundoFor += 1;
         }
 
-        crearAutomaatAFD_O_AFN(automataB.getNombre() + "_Complemento", "AFD", estadosNuevos, lenguajeNuevo, automataB.getEstadoInicial().getNombre() + "" + (automataB.getEstados().indexOf(automataB.getEstadoInicial()) + inicioSegundoFor), estadosAceptadoresNueva);
-        System.out.println("Nombre: " + automataB.getNombre() + "_Complemento");
-//        for (int i = 0; i < automataB.getTransiciones().size(); i++) {
-//            System.out.println("A: " + automataB.getTransiciones().get(i).getEstadoA().getNombre() + (automataB.getEstados().indexOf(automataB.getTransiciones().get(i).getEstadoA()) + inicioSegundoFor) + " lo que busco: " + automataB.getTransiciones().get(i).getEstadoA().getNombre());
-//            System.out.println("lenguaje" + automataB.getTransiciones().get(i).getSimbolo());
-//            System.out.println("B: " + automataB.getTransiciones().get(i).getEstadoB().getNombre() + (automataB.getEstados().indexOf(automataB.getTransiciones().get(i).getEstadoB()) + inicioSegundoFor) + " lo que busco: " + automataB.getTransiciones().get(i).getEstadoB().getNombre());
-//        }
+        crearAutomaatAFD_O_AFN(automataB.getNombre() + "_ComplementoP", "AFD", estadosNuevos, lenguajeNuevo, automataB.getEstadoInicial().getNombre() + "" + (automataB.getEstados().indexOf(automataB.getEstadoInicial()) + inicioSegundoFor), estadosAceptadoresNueva);
+
         for (int i = 0; i < automataB.getTransiciones().size(); i++) {
-            agregarTransicionAFD(automataB.getNombre() + "_Complemento",automataB.getTransiciones().get(i).getEstadoA().getNombre() + (automataB.getEstados().indexOf(automataB.getTransiciones().get(i).getEstadoA()) + inicioSegundoFor),automataB.getTransiciones().get(i).getSimbolo(),automataB.getTransiciones().get(i).getEstadoB().getNombre() + (automataB.getEstados().indexOf(automataB.getTransiciones().get(i).getEstadoB()) + inicioSegundoFor));
+            agregarTransicionAFD(automataB.getNombre() + "_ComplementoP", automataB.getTransiciones().get(i).getEstadoA().getNombre() + (automataB.getEstados().indexOf(automataB.getTransiciones().get(i).getEstadoA()) + inicioSegundoFor), automataB.getTransiciones().get(i).getSimbolo(), automataB.getTransiciones().get(i).getEstadoB().getNombre() + (automataB.getEstados().indexOf(automataB.getTransiciones().get(i).getEstadoB()) + inicioSegundoFor));
         }
-        
+
+    }
+
+    //Metodo para remver de la lista
+    public void eliminarAutomata(String automata) {
+        for (int i = 0; i < automatas.size(); i++) {
+            if (automatas.get(i).getNombre().equals(automata)) {
+                automatas.remove(i);
+            }
+        }
     }
 
     //Metodo de la concatenacion Thompson
@@ -938,17 +939,118 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
         //System.out.println("Automata uno: "+automataUno+" Automata Dos: "+automataDos);
         Automata automataA = devolverAutomata(automataUno);
         Automata automataB = devolverAutomata(automataDos);
+        String estadosNuevos = "";
+        String estadosAceptadoresNueva = "";
+        String lenguajeNuevo = "";
+        String estadoInicial = "";
+        String estadoFinal = "";
+        String estadoTransitivo = "";
+        String lenguajeAFD_E = "";
 
         if (sonIgualesLenguajes(automataA.getLenguaje(), automataB.getLenguaje())) {
             cambiarNombres(automataA, automataB);
-            System.out.println("Son iguales");
 
-        } else {
+            for (int h = 0; h < automataA.getLenguaje().size(); h++) {
+                if (!automataA.getLenguaje().get(h).equalsIgnoreCase("E")) {
+                    lenguajeNuevo += automataA.getLenguaje().get(h) + ",";
+                }
+            }
+            lenguajeAFD_E = lenguajeNuevo;
+            System.out.println("lenguajeAFD_E: " + lenguajeAFD_E);
+            lenguajeNuevo += "E";
+
+            for (int z = 0; z < automatas.size(); z++) {
+                if ((automatas.get(z).getNombre().equals(automataB.getNombre() + "_ComplementoP"))) {
+                    estadoTransitivo = automatas.get(z).getEstadoInicial().getNombre();
+                    break;
+                }
+            }
+
+            for (int i = 0; i < automatas.size(); i++) {
+                if ((automatas.get(i).getNombre().equals(automataA.getNombre() + "_ComplementoP")) || (automatas.get(i).getNombre().equals(automataB.getNombre() + "_ComplementoP"))) {
+                    for (int j = 0; j < automatas.get(i).getEstados().size(); j++) {
+                        if (estadosNuevos == "") {
+                            estadoInicial = automatas.get(i).getEstados().get(j).getNombre();
+                        }
+                        estadosNuevos += automatas.get(i).getEstados().get(j).getNombre() + ",";
+                        if (contiene(automatas.get(i).getEstadoAceptador(), automatas.get(i).getEstados().get(j).getNombre())) {
+                            estadosAceptadoresNueva += automatas.get(i).getEstados().get(j).getNombre() + ",";
+                        }
+                        estadoFinal = automatas.get(i).getEstados().get(j).getNombre();
+                    }
+
+                }
+            }
+
+            for (int i = 0; i < automatas.size(); i++) {
+                if ((automatas.get(i).getNombre().equals(automataB.getNombre() + "_ComplementoP"))) {
+                    if (automatas.get(i).getEstadoAceptador().size() == 1) {
+                        if ((automataA.getTipoAutomata().equalsIgnoreCase("AFD")) || (automataA.getTipoAutomata().equalsIgnoreCase("AFN"))) {
+                            crearAutomaatAFD_O_AFN(automataA.getNombre() + automataB.getNombre() + "_Complemento", "AFD", estadosNuevos, lenguajeNuevo, estadoInicial, estadoFinal);
+                        } else {
+                            crearAutomaatAFN_E(automataA.getNombre() + automataB.getNombre() + "_Complemento", "AFD", estadosNuevos, lenguajeAFD_E, estadoInicial, estadoFinal);
+                        }
+                        for (int l = 0; l < automatas.size(); l++) {
+                            if ((automatas.get(l).getNombre().equals(automataA.getNombre() + "_ComplementoP")) || (automatas.get(l).getNombre().equals(automataB.getNombre() + "_ComplementoP"))) {
+                                for (int t = 0; t < automatas.get(l).getTransiciones().size(); t++) {
+                                    agregarTransicionAFN_O_AFNE(automataA.getNombre() + automataB.getNombre() + "_Complemento", automatas.get(l).getTransiciones().get(t).getEstadoA().getNombre(), automatas.get(l).getTransiciones().get(t).getSimbolo(), automatas.get(l).getTransiciones().get(t).getEstadoB().getNombre());
+                                }
+                            }
+                        }
+                        for (int l = 0; l < automatas.size(); l++) {
+                            if (automatas.get(l).getNombre().equals(automataA.getNombre() + "_ComplementoP")) {
+                                for (int t = 0; t < automatas.get(l).getEstadoAceptador().size(); t++) {
+                                    System.out.println("A: " + automatas.get(l).getEstadoAceptador().get(t).getNombre() + " Lenguaje: E" + " B: " + estadoTransitivo);
+                                    agregarTransicionAFN_O_AFNE(automataA.getNombre() + automataB.getNombre() + "_Complemento", automatas.get(l).getEstadoAceptador().get(t).getNombre(), "E", estadoTransitivo);
+                                }
+                            }
+                        }
+                    } else {
+                        estadosNuevos += "q";
+                        if ((automataA.getTipoAutomata().equalsIgnoreCase("AFD")) || (automataA.getTipoAutomata().equalsIgnoreCase("AFN"))) {
+                            crearAutomaatAFD_O_AFN(automataA.getNombre() + automataB.getNombre() + "_Complemento", "AFD", estadosNuevos, lenguajeNuevo, estadoInicial, "q");
+                        } else {
+                            crearAutomaatAFN_E(automataA.getNombre() + automataB.getNombre() + "_Complemento", "AFD", estadosNuevos, lenguajeAFD_E, estadoInicial, "q");
+                        }
+
+                        for (int l = 0; l < automatas.size(); l++) {
+                            if ((automatas.get(l).getNombre().equals(automataA.getNombre() + "_ComplementoP")) || (automatas.get(l).getNombre().equals(automataB.getNombre() + "_ComplementoP"))) {
+                                for (int t = 0; t < automatas.get(l).getTransiciones().size(); t++) {
+                                    agregarTransicionAFN_O_AFNE(automataA.getNombre() + automataB.getNombre() + "_Complemento", automatas.get(l).getTransiciones().get(t).getEstadoA().getNombre(), automatas.get(l).getTransiciones().get(t).getSimbolo(), automatas.get(l).getTransiciones().get(t).getEstadoB().getNombre());
+                                }
+                            }
+                        }
+                        for (int l = 0; l < automatas.size(); l++) {
+                            if (automatas.get(l).getNombre().equals(automataA.getNombre() + "_ComplementoP")) {
+                                for (int t = 0; t < automatas.get(l).getEstadoAceptador().size(); t++) {
+                                    //System.out.println("A: " + automatas.get(l).getEstadoAceptador().get(t).getNombre() + " Lenguaje: E" + " B: " + estadoTransitivo);
+                                    agregarTransicionAFN_O_AFNE(automataA.getNombre() + automataB.getNombre() + "_Complemento", automatas.get(l).getEstadoAceptador().get(t).getNombre(), "E", estadoTransitivo);
+                                }
+                            }
+                        }
+                        for (int l = 0; l < automatas.size(); l++) {
+                            if (automatas.get(l).getNombre().equals(automataB.getNombre() + "_ComplementoP")) {
+                                for (int t = 0; t < automatas.get(l).getEstadoAceptador().size(); t++) {
+                                    agregarTransicionAFN_O_AFNE(automataA.getNombre() + automataB.getNombre() + "_Complemento", automatas.get(l).getEstadoAceptador().get(t).getNombre(), "E", "q");
+                                    //agregarTransicionAFN_O_AFNE(automataA.getNombre() + automataB.getNombre() + "_Complemento", "q", "E", automatas.get(l).getEstadoAceptador().get(t).getNombre() );
+                                }
+                            }
+                        }
+
+                        System.out.println("Tine mas de un aceptador");
+                    }
+                }
+            }
+            eliminarAutomata(automataA.getNombre() + "_ComplementoP");
+            eliminarAutomata(automataB.getNombre() + "_ComplementoP");
+
+        } //crearAutomaatAFD_O_AFN(automataA.getNombre()+automataB.getNombre()+ "_Complemento", "AFD", estadosNuevos, lenguajeNuevo, estadoInicial, estadosAceptadoresNueva);
+        else {
             System.out.println("NO se puede realizar la concatenacion por que No son iguales los lenguajes");
         }
     }
 
-    ///fin de la clase MetodosDeCreacionLogica
+///fin de la clase MetodosDeCreacionLogica
     public void setAutomatas(LinkedList<Automata> automatas) {
         this.automatas = automatas;
     }
