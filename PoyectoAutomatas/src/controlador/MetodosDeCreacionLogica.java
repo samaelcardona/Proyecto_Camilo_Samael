@@ -23,7 +23,7 @@ import vista.Frame;
  *
  * @author Samael
  */
-public class MetodosDeCreacionLogica implements java.io.Serializable{
+public class MetodosDeCreacionLogica implements java.io.Serializable {
 
     ////codigo inicio de MetodosDeCreacionLogica
     //lista de automatas esta para guardar los automatas creados, tiene un get en la parte final de la clase
@@ -36,26 +36,20 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
         String cadenaSeparada[] = cadena.split(",");
 
         LinkedList<Object> lista = new LinkedList();
-        
-        if (!cadenaSeparada[0].equals(""))
-            {  
-                if ("estado".equals(TipoDividir)) 
-                {
-                    for (int i = 0; i < cadenaSeparada.length; i++)
-                    {
-                        lista.add(new Estado(cadenaSeparada[i], false, false, 0, 0));
-                    }
+
+        if (!cadenaSeparada[0].equals("")) {
+            if ("estado".equals(TipoDividir)) {
+                for (int i = 0; i < cadenaSeparada.length; i++) {
+                    lista.add(new Estado(cadenaSeparada[i], false, false, 0, 0));
                 }
-        
-        
-                if ("string".equals(TipoDividir)) 
-                {
-                    for (int i = 0; i < cadenaSeparada.length; i++) 
-                    {
-                        lista.add(cadenaSeparada[i]);
-                    }
+            }
+
+            if ("string".equals(TipoDividir)) {
+                for (int i = 0; i < cadenaSeparada.length; i++) {
+                    lista.add(cadenaSeparada[i]);
                 }
-         }
+            }
+        }
 
         return lista;
     }
@@ -86,9 +80,6 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
             primeraVerificacion = false;
             System.out.println("verifique sus estados");
         }
-        
-        
-        
 
         if (primeraVerificacion == true) {
             for (int i = 0; i < listadeestados.size(); i++) {
@@ -115,263 +106,222 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
     public void crearAutomaatAFD_O_AFN(String nombre, String tipoAutomata, String estados, String lenguaje, String estadoinicial, String estadosaceptadores) {
         boolean variable = false;
 
-                if (!automatas.isEmpty()) {
-                    for (int i = 0; i < automatas.size(); i++) {
-                        if (automatas.get(i).getNombre().equals(nombre)) {
-                            variable = true;
-                        }
-                    }
+        if (!automatas.isEmpty()) {
+            for (int i = 0; i < automatas.size(); i++) {
+                if (automatas.get(i).getNombre().equals(nombre)) {
+                    variable = true;
                 }
-
-                if (variable == true) {
-                    System.out.println("El automata ya existe, verifique nombre");
-                } else {
-
-                    LinkedList<Estado> listadeestados = separarCadenas(estados, "estado");
-                    LinkedList<String> listalenguaje = separarCadenas(lenguaje, "string");
-                    LinkedList<Estado> listadeestadosaceptadores = separarCadenas(estadosaceptadores, "estado");
-
-                    //cambia el tipo del estado a aceptador en la lista de estados y en la lista de aceptadores
-                    for (int i = 0; i < listadeestadosaceptadores.size(); i++) {
-                        for (int j = 0; j < listadeestados.size(); j++) {
-                            if (listadeestados.get(j).getNombre().equals(listadeestadosaceptadores.get(i).getNombre())) {
-                                listadeestados.get(j).setEsAceptador(true);
-                                listadeestadosaceptadores.get(i).setEsAceptador(true);
-                            }
-                        }
-                    }
-
-                    //cambia de tipo en la lista de estados a inicial para el estado que es inicial
-                    Estado estadoini = new Estado();
-
-                    for (int i = 0; i < listadeestados.size(); i++) {
-                        if (listadeestados.get(i).getNombre().equals(estadoinicial)) {
-                            listadeestados.get(i).setEsInicial(true);
-                            estadoini = listadeestados.get(i);
-                        }
-                    }
-
-                    if (verificarexistencia(listadeestadosaceptadores, listadeestados, estadoini) == true) {
-                        Automata automataNuevo = new Automata(nombre, tipoAutomata, listadeestados, listalenguaje, estadoini, listadeestadosaceptadores);
-                        automatas.add(automataNuevo);
-                        System.out.println("El automata se creo exitosamente");
-                    }
-                }
-
+            }
         }
 
-        //metodo para crear automatas finitos no deterministas con transiciones E
-        //recibe todos los parametros en una cadena, esta cadena llama al metodo separarCadenas para crear las listas 
-        //necesarias para el automata en la lista de lenguaje se le agrega la transicion E para que se identifique 
-        //como un AFN_E luego de agregar esto se llama al metodo de verificarExistencia para que este verifique si concuerdan
-        //los estados aceptadores y el estado inicial con la lista de estados agregada, por ultimo crea un automata
-        //y lo agrega en la lista de automatas.
-        public void crearAutomaatAFN_E(String nombre, String tipoAutomata, String estados, String lenguaje, String estadoinicial, String estadosaceptadores) {
-            boolean variable = false;
+        if (variable == true) {
+            System.out.println("El automata ya existe, verifique nombre");
+        } else {
 
-            if (!automatas.isEmpty()) {
-                for (int i = 0; i < automatas.size(); i++) {
-                    if (automatas.get(i).getNombre().equals(nombre)) {
-                        variable = true;
+            LinkedList<Estado> listadeestados = separarCadenas(estados, "estado");
+            LinkedList<String> listalenguaje = separarCadenas(lenguaje, "string");
+            LinkedList<Estado> listadeestadosaceptadores = separarCadenas(estadosaceptadores, "estado");
+
+            //cambia el tipo del estado a aceptador en la lista de estados y en la lista de aceptadores
+            for (int i = 0; i < listadeestadosaceptadores.size(); i++) {
+                for (int j = 0; j < listadeestados.size(); j++) {
+                    if (listadeestados.get(j).getNombre().equals(listadeestadosaceptadores.get(i).getNombre())) {
+                        listadeestados.get(j).setEsAceptador(true);
+                        listadeestadosaceptadores.get(i).setEsAceptador(true);
                     }
                 }
             }
 
-            if (variable == true) {
-                System.out.println("El automata ya existe, verifique nombre");
-            } else {
+            //cambia de tipo en la lista de estados a inicial para el estado que es inicial
+            Estado estadoini = new Estado();
 
-                LinkedList<Estado> listadeestados = separarCadenas(estados, "estado");
-                LinkedList<String> listalenguaje = separarCadenas(lenguaje, "string");
-                listalenguaje.add("E");
-                LinkedList<Estado> listadeestadosaceptadores = separarCadenas(estadosaceptadores, "estado");
-
-                //cambia el tipo del estado a aceptador en la lista de estados y en la lista de aceptadores
-                for (int i = 0; i < listadeestadosaceptadores.size(); i++) {
-                    for (int j = 0; j < listadeestados.size(); j++) {
-                        if (listadeestados.get(j).getNombre().equals(listadeestadosaceptadores.get(i).getNombre())) {
-                            listadeestados.get(j).setEsAceptador(true);
-                            listadeestadosaceptadores.get(i).setEsAceptador(true);
-                        }
-                    }
-                }
-
-                //cambia de tipo en la lista de estados a inicial para el estado que es inicial
-                Estado estadoini = new Estado();
-
-                for (int i = 0; i < listadeestados.size(); i++) {
-                    if (listadeestados.get(i).getNombre().equals(estadoinicial)) {
-                        listadeestados.get(i).setEsInicial(true);
-                        estadoini = listadeestados.get(i);
-                    }
-                }
-
-                if (verificarexistencia(listadeestadosaceptadores, listadeestados, estadoini) == true) {
-                    Automata automataNuevo = new Automata(nombre, tipoAutomata, listadeestados, listalenguaje, estadoini, listadeestadosaceptadores);
-                    automatas.add(automataNuevo);
-                    System.out.println("El automata se creo exitosamente");
+            for (int i = 0; i < listadeestados.size(); i++) {
+                if (listadeestados.get(i).getNombre().equals(estadoinicial)) {
+                    listadeestados.get(i).setEsInicial(true);
+                    estadoini = listadeestados.get(i);
                 }
             }
+
+            if (verificarexistencia(listadeestadosaceptadores, listadeestados, estadoini) == true) {
+                Automata automataNuevo = new Automata(nombre, tipoAutomata, listadeestados, listalenguaje, estadoini, listadeestadosaceptadores);
+                automatas.add(automataNuevo);
+                System.out.println("El automata se creo exitosamente");
+            }
+        }
+
     }
-        
-        
-        ///verifica que no haya una repeticion de estados o simbolos al agregarlos con el metodo agregarAlAutomata
-        //recibe nombre del automata en String una cadena que es el nombre del estado y el tipo que puede ser un estado o un 
-        //simbolo
-        public boolean verificarRepetidosAgregacion(String nombreAt,String cadena,String tipo)
-        {
-            boolean retorna=true;
-            for (int i = 0; i < automatas.size(); i++)
-            {
-                if (automatas.get(i).getNombre().equals(nombreAt)) 
-                {
-                    if (tipo.equals("estado")) 
-                    {
-                        for (int j = 0; j <automatas.get(i).getEstados().size() ; j++) 
-                        {
-                            if (automatas.get(i).getEstados().get(j).getNombre().equals(cadena)) 
-                            {
-                                retorna=false;
-                            }
-                        }
 
+    //metodo para crear automatas finitos no deterministas con transiciones E
+    //recibe todos los parametros en una cadena, esta cadena llama al metodo separarCadenas para crear las listas 
+    //necesarias para el automata en la lista de lenguaje se le agrega la transicion E para que se identifique 
+    //como un AFN_E luego de agregar esto se llama al metodo de verificarExistencia para que este verifique si concuerdan
+    //los estados aceptadores y el estado inicial con la lista de estados agregada, por ultimo crea un automata
+    //y lo agrega en la lista de automatas.
+    public void crearAutomaatAFN_E(String nombre, String tipoAutomata, String estados, String lenguaje, String estadoinicial, String estadosaceptadores) {
+        boolean variable = false;
+
+        if (!automatas.isEmpty()) {
+            for (int i = 0; i < automatas.size(); i++) {
+                if (automatas.get(i).getNombre().equals(nombre)) {
+                    variable = true;
+                }
+            }
+        }
+
+        if (variable == true) {
+            System.out.println("El automata ya existe, verifique nombre");
+        } else {
+
+            LinkedList<Estado> listadeestados = separarCadenas(estados, "estado");
+            LinkedList<String> listalenguaje = separarCadenas(lenguaje, "string");
+            listalenguaje.add("E");
+            LinkedList<Estado> listadeestadosaceptadores = separarCadenas(estadosaceptadores, "estado");
+
+            //cambia el tipo del estado a aceptador en la lista de estados y en la lista de aceptadores
+            for (int i = 0; i < listadeestadosaceptadores.size(); i++) {
+                for (int j = 0; j < listadeestados.size(); j++) {
+                    if (listadeestados.get(j).getNombre().equals(listadeestadosaceptadores.get(i).getNombre())) {
+                        listadeestados.get(j).setEsAceptador(true);
+                        listadeestadosaceptadores.get(i).setEsAceptador(true);
+                    }
+                }
+            }
+
+            //cambia de tipo en la lista de estados a inicial para el estado que es inicial
+            Estado estadoini = new Estado();
+
+            for (int i = 0; i < listadeestados.size(); i++) {
+                if (listadeestados.get(i).getNombre().equals(estadoinicial)) {
+                    listadeestados.get(i).setEsInicial(true);
+                    estadoini = listadeestados.get(i);
+                }
+            }
+
+            if (verificarexistencia(listadeestadosaceptadores, listadeestados, estadoini) == true) {
+                Automata automataNuevo = new Automata(nombre, tipoAutomata, listadeestados, listalenguaje, estadoini, listadeestadosaceptadores);
+                automatas.add(automataNuevo);
+                System.out.println("El automata se creo exitosamente");
+            }
+        }
+    }
+
+    ///verifica que no haya una repeticion de estados o simbolos al agregarlos con el metodo agregarAlAutomata
+    //recibe nombre del automata en String una cadena que es el nombre del estado y el tipo que puede ser un estado o un 
+    //simbolo
+    public boolean verificarRepetidosAgregacion(String nombreAt, String cadena, String tipo) {
+        boolean retorna = true;
+        for (int i = 0; i < automatas.size(); i++) {
+            if (automatas.get(i).getNombre().equals(nombreAt)) {
+                if (tipo.equals("estado")) {
+                    for (int j = 0; j < automatas.get(i).getEstados().size(); j++) {
+                        if (automatas.get(i).getEstados().get(j).getNombre().equals(cadena)) {
+                            retorna = false;
+                        }
                     }
 
-                    if (tipo.equals("simbolo")) 
-                    {
-                          for (int j = 0; j <automatas.get(i).getLenguaje().size() ; j++) 
-                        {
-                            if (automatas.get(i).getLenguaje().get(j).equals(cadena)) 
-                            {
-                                retorna=false;
-                            }
+                }
+
+                if (tipo.equals("simbolo")) {
+                    for (int j = 0; j < automatas.get(i).getLenguaje().size(); j++) {
+                        if (automatas.get(i).getLenguaje().get(j).equals(cadena)) {
+                            retorna = false;
                         }
                     }
-                    
-                     if (tipo.equals("estadoAceptador")) 
-                    {
-                        for (int j = 0; j <automatas.get(i).getEstadoAceptador().size() ; j++) 
-                        {
-                            if (automatas.get(i).getEstadoAceptador().get(j).getNombre().equals(cadena)) 
-                            {
-                                retorna=false;
-                            }
+                }
+
+                if (tipo.equals("estadoAceptador")) {
+                    for (int j = 0; j < automatas.get(i).getEstadoAceptador().size(); j++) {
+                        if (automatas.get(i).getEstadoAceptador().get(j).getNombre().equals(cadena)) {
+                            retorna = false;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        return retorna;
+
+    }
+
+    ///agregar lo que llegue a un automata para dejarlo intercambiable
+    public void agregarAlAutomata(String nombre, String estados, String lenguaje, String estadoinicial, String estadosaceptadores) {
+        for (int i = 0; i < automatas.size(); i++) {
+            if (automatas.get(i).getNombre().equals("" + nombre)) {
+                //agregar estados 
+                if (!estados.equals("")) {
+                    String cadenaSeparada[] = estados.split(",");
+
+                    for (int j = 0; j < cadenaSeparada.length; j++) {
+                        Estado estadonuevo = new Estado(cadenaSeparada[j] + "", false, false, 0, 0);
+
+                        if (this.verificarRepetidosAgregacion(automatas.get(i).getNombre() + "", cadenaSeparada[j] + "", "estado") == true) {
+                            automatas.get(i).getEstados().add(estadonuevo);
+                        }
+                    }
+                }
+
+                ///agregar simbolos al lenguaje
+                if (!lenguaje.equals("")) {
+                    String cadenaSeparada[] = lenguaje.split(",");
+
+                    for (int j = 0; j < cadenaSeparada.length; j++) {
+                        if (this.verificarRepetidosAgregacion(automatas.get(i).getNombre() + "", cadenaSeparada[j] + "", "simbolo") == true) {
+                            automatas.get(i).getLenguaje().add(cadenaSeparada[j] + "");
                         }
 
                     }
                 }
-             }
-            
-            return retorna;
-            
-        }
 
-       
-        
-    ///agregar lo que llegue a un automata para dejarlo intercambiable
-    public void  agregarAlAutomata(String nombre,String estados, String lenguaje, String estadoinicial, String estadosaceptadores)
-    {
-        for (int i = 0; i < automatas.size(); i++) 
-        {
-            if (automatas.get(i).getNombre().equals(""+nombre)) 
-            {
-                //agregar estados 
-                 if (!estados.equals("")) 
-                 { 
-                     String cadenaSeparada[] = estados.split(",");
-                     
-                     for (int j = 0; j < cadenaSeparada.length; j++) 
-                     {
-                         Estado estadonuevo=new Estado(cadenaSeparada[j]+"", false, false, 0, 0);
-                         
-                         if (this.verificarRepetidosAgregacion(automatas.get(i).getNombre()+"", cadenaSeparada[j]+"", "estado")==true) 
-                         {
-                             automatas.get(i).getEstados().add(estadonuevo);
-                         }  
-                     }
-                 }
-           
-                 ///agregar simbolos al lenguaje
-                 if (!lenguaje.equals("")) 
-                 { 
-                     String cadenaSeparada[] = lenguaje.split(",");
-                     
-                     for (int j = 0; j < cadenaSeparada.length; j++) 
-                     {
-                         if (this.verificarRepetidosAgregacion(automatas.get(i).getNombre()+"", cadenaSeparada[j]+"", "simbolo")==true) 
-                         {
-                             automatas.get(i).getLenguaje().add(cadenaSeparada[j]+"");  
-                         }
-                          
-                     }
-                 }
-                 
-                 //para el estado inicial
-                 if (!estadoinicial.equals("")) 
-                 { 
-                     JOptionPane.showMessageDialog(new JFrame(), "El automata ya tiene un estado inicial");
-                 }
-                 
-                 //para los estado aceptadores
-                 if (!estadosaceptadores.equals("")) 
-                 {
-                     String cadenaSeparada[] = estadosaceptadores.split(",");
-                     LinkedList<Estado> aceptadoresnueva=new LinkedList();
-                     LinkedList<Estado> aceptadorescopia=new LinkedList();
-                     
-                     for (int j = 0; j < cadenaSeparada.length; j++) 
-                     {
-                        Estado nuevoestado=new Estado(cadenaSeparada[j]+"",false,true,0,0);
-                         
+                //para el estado inicial
+                if (!estadoinicial.equals("")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "El automata ya tiene un estado inicial");
+                }
+
+                //para los estado aceptadores
+                if (!estadosaceptadores.equals("")) {
+                    String cadenaSeparada[] = estadosaceptadores.split(",");
+                    LinkedList<Estado> aceptadoresnueva = new LinkedList();
+                    LinkedList<Estado> aceptadorescopia = new LinkedList();
+
+                    for (int j = 0; j < cadenaSeparada.length; j++) {
+                        Estado nuevoestado = new Estado(cadenaSeparada[j] + "", false, true, 0, 0);
+
                         aceptadoresnueva.add(nuevoestado);
                         aceptadorescopia.add(nuevoestado);
-                        
-                     }
-                     
-                     for (int j = 0; j < automatas.get(i).getEstados().size(); j++) 
-                     {
-                         for (int k = 0; k < aceptadorescopia.size(); k++) 
-                         {                             
-                            if (automatas.get(i).getEstados().get(j).getNombre().equals(aceptadorescopia.get(k).getNombre()+"")) 
-                            {                               
+
+                    }
+
+                    for (int j = 0; j < automatas.get(i).getEstados().size(); j++) {
+                        for (int k = 0; k < aceptadorescopia.size(); k++) {
+                            if (automatas.get(i).getEstados().get(j).getNombre().equals(aceptadorescopia.get(k).getNombre() + "")) {
                                 aceptadorescopia.remove(k);
                             }
-                         }
-                     }
-                     
-                     
-                     if (aceptadorescopia.size()>0) 
-                     {
-                         JOptionPane.showMessageDialog(new JFrame(),"Verifique estados aceptadores a ingresar");
-                     }
-                     else
-                     {
-                         for (int j = 0; j < aceptadoresnueva.size(); j++) 
-                         {
-                             for (int k = 0; k < automatas.get(i).getEstados().size(); k++) 
-                             {
-                                 if (automatas.get(i).getEstados().get(k).getNombre().equals(aceptadoresnueva.get(j).getNombre()+"")) 
-                                 {
-                                     if (this.verificarRepetidosAgregacion(automatas.get(i).getNombre()+"",automatas.get(i).getEstados().get(k).getNombre()+"", "estadoAceptador")==true) 
-                                     {
-                                         
-                                         automatas.get(i).getEstados().get(k).setEsAceptador(true);
-                                         automatas.get(i).getEstadoAceptador().add(automatas.get(i).getEstados().get(k));
-                                     }
-                                     
-                                     
-                                 }
-                             }
-                         }
-                         
-                     }   
-                 } 
-            }   
+                        }
+                    }
+
+                    if (aceptadorescopia.size() > 0) {
+                        JOptionPane.showMessageDialog(new JFrame(), "Verifique estados aceptadores a ingresar");
+                    } else {
+                        for (int j = 0; j < aceptadoresnueva.size(); j++) {
+                            for (int k = 0; k < automatas.get(i).getEstados().size(); k++) {
+                                if (automatas.get(i).getEstados().get(k).getNombre().equals(aceptadoresnueva.get(j).getNombre() + "")) {
+                                    if (this.verificarRepetidosAgregacion(automatas.get(i).getNombre() + "", automatas.get(i).getEstados().get(k).getNombre() + "", "estadoAceptador") == true) {
+
+                                        automatas.get(i).getEstados().get(k).setEsAceptador(true);
+                                        automatas.get(i).getEstadoAceptador().add(automatas.get(i).getEstados().get(k));
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
         }
     }
-    
-    
-    
+
     ///devuelve el estado de un automata recicibiendo el nombre del estado como una cadena o String y se busca en el automata
     //que tambien se recibe como parametro
     public Estado devolverEstado(Automata automata, String nombreEstado) {
@@ -388,7 +338,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
     //retorna un true si el estado si existe en la lista de estados
     public boolean verificarEstadoTransicion(LinkedList<Estado> listadeEstados, Estado estado) {
         boolean primeraVerificacion = false;
-        
+
         for (int i = 0; i < listadeEstados.size(); i++) {
             if (listadeEstados.get(i).getNombre().equals(estado.getNombre())) {
                 primeraVerificacion = true;
@@ -459,23 +409,19 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
             if (verificarEstadoTransicion(automatas.get(posicionAutomata).getEstados(), devolverEstado(automatas.get(posicionAutomata), estadoA)) == true) {
                 if (verificarEstadoTransicion(automatas.get(posicionAutomata).getEstados(), devolverEstado(automatas.get(posicionAutomata), estadoB)) == true) {
                     if (verificarSimbolo(automatas.get(posicionAutomata), simbolo) == true) {
-                     ///verificar si no hay una transicion con ese simbolo 
+                        ///verificar si no hay una transicion con ese simbolo 
 
                         if (automatas.get(posicionAutomata).getTransiciones().size() == 0) {
                             Transicion nuevaTransicion = new Transicion(devolverEstado(automatas.get(posicionAutomata), estadoA), simbolo, devolverEstado(automatas.get(posicionAutomata), estadoB));
 
                             automatas.get(posicionAutomata).getTransiciones().add(nuevaTransicion);
 
+                        } else if (verificarTransicionAFD(automatas.get(posicionAutomata), estadoA, simbolo) == true) {
+                            Transicion nuevaTransicion = new Transicion(devolverEstado(automatas.get(posicionAutomata), estadoA), simbolo, devolverEstado(automatas.get(posicionAutomata), estadoB));
+
+                            automatas.get(posicionAutomata).getTransiciones().add(nuevaTransicion);
                         } else {
-
-                            if (verificarTransicionAFD(automatas.get(posicionAutomata), estadoA, simbolo) == true) {
-                                Transicion nuevaTransicion = new Transicion(devolverEstado(automatas.get(posicionAutomata), estadoA), simbolo, devolverEstado(automatas.get(posicionAutomata), estadoB));
-
-                                automatas.get(posicionAutomata).getTransiciones().add(nuevaTransicion);
-                            } else {
-                                System.out.println("verifique transicion Para AFD");
-                            }
-
+                            System.out.println("verifique transicion Para AFD");
                         }
 
                     }
@@ -542,43 +488,27 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
             ///saco el automata que me dieron en el string 
             if (automatas.get(i).getNombre().equals(nombreAutomata)) {
                 if (automatas.get(i).getTipoAutomata().equals("AFD")) {
-                    if (this.verificarLenguaje(automatas.get(i), cadena) == true) 
-                    {
+                    if (this.verificarLenguaje(automatas.get(i), cadena) == true) {
                         //ruta cadena es la ruta que toma con la cadena dada 
                         rutaCadena = recorridoEvaluarCadena(automatas.get(i), rutaCadena, automatas.get(i).getEstadoInicial(), cadena);
 
                         //aca tomo la ultima posicion en la que quedo por el recorrido de la cadena
                         //y verifico si es aceptador o no 
-                        if (rutaCadena.size()!=0) 
-                        {
-                            if (rutaCadena.getLast().isEsAceptador() == true)
-                            {
+                        if (rutaCadena.size() != 0) {
+                            if (rutaCadena.getLast().isEsAceptador() == true) {
                                 return true;
                             }
 
-                            if (rutaCadena.getLast().isEsAceptador() == false) 
-                            {
+                            if (rutaCadena.getLast().isEsAceptador() == false) {
                                 return false;
                             }
+                        } else if (automatas.get(i).getEstadoInicial().isEsAceptador() == true) {
+                            return true;
+                        } else {
+                            return false;
                         }
-                        else
-                        {
-                            if (automatas.get(i).getEstadoInicial().isEsAceptador()==true) 
-                            {
-                              return true;
-                            }
-                            else
-                            {
-                              return false;
-                            }
-                            
-                            
-                        }
-                        
-                        
-                    }
-                    else 
-                    {
+
+                    } else {
                         System.out.println("verifique lenguaje");
                     }
                 }
@@ -658,259 +588,196 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
         }
 
     }
-    
-    
-    
+
     ///minimizar
-    
     ///verificar marcacnion para minimizar
-        public LinkedList<Estado> verificarMarcacion(Automata atver, Estado[] vec1, Estado[] vec2, int arribai, int abajoi)
-        {
-            ////posiciones para las transiciones
-            
-            
-            System.out.println("vec1 " +vec1[arribai].getNombre() );    
-            
-            System.out.println("vec2 " +vec2[abajoi].getNombre()+"\n"+"-----"+"\n" );    
-            
-            ////esta lista se crea para que guarde los estados por cada simbolo que encuentre
-            LinkedList<Estado> listaporsimbolos = new LinkedList<Estado>();
+    public LinkedList<Estado> verificarMarcacion(Automata atver, Estado[] vec1, Estado[] vec2, int arribai, int abajoi) {
+        ////posiciones para las transiciones
 
-            ///// aca verifico por cada simbolo si con el mismo simbolo 
-            ////salen los dos estados ... verifico si estan vacios
-            for (int j = 0; j < atver.getLenguaje().size(); j++)
-            {
-                int posiciontrans1 = -5;
-                int posiciontrans2 = -5;
+        System.out.println("vec1 " + vec1[arribai].getNombre());
 
-                for (int i = 0; i < atver.getTransiciones().size(); i++)
-                {
-                    if (vec1[arribai].getNombre().equals(atver.getTransiciones().get(i).getEstadoA().getNombre()) && atver.getTransiciones().get(i).getSimbolo().equals(atver.getLenguaje().get(j)))
-                    {
+        System.out.println("vec2 " + vec2[abajoi].getNombre() + "\n" + "-----" + "\n");
 
-                        posiciontrans1 = i;
-                    }
+        ////esta lista se crea para que guarde los estados por cada simbolo que encuentre
+        LinkedList<Estado> listaporsimbolos = new LinkedList<Estado>();
 
-                }
+        ///// aca verifico por cada simbolo si con el mismo simbolo 
+        ////salen los dos estados ... verifico si estan vacios
+        for (int j = 0; j < atver.getLenguaje().size(); j++) {
+            int posiciontrans1 = -5;
+            int posiciontrans2 = -5;
 
-                for (int i = 0; i < atver.getTransiciones().size(); i++)
-                {
-                    if (vec2[abajoi].getNombre().equals(atver.getTransiciones().get(i).getEstadoA().getNombre()) && atver.getTransiciones().get(i).getSimbolo().equals(atver.getLenguaje().get(j)))
-                    {
-                        posiciontrans2 = i;
-                    }
+            for (int i = 0; i < atver.getTransiciones().size(); i++) {
+                if (vec1[arribai].getNombre().equals(atver.getTransiciones().get(i).getEstadoA().getNombre()) && atver.getTransiciones().get(i).getSimbolo().equals(atver.getLenguaje().get(j))) {
 
-                }
-
-                if (posiciontrans1 != -5 && posiciontrans2 != -5)
-                {
-                    listaporsimbolos.add(atver.getTransiciones().get(posiciontrans1).getEstadoB());
-                    listaporsimbolos.add(atver.getTransiciones().get(posiciontrans2).getEstadoB());              
+                    posiciontrans1 = i;
                 }
 
             }
 
-            return listaporsimbolos;
+            for (int i = 0; i < atver.getTransiciones().size(); i++) {
+                if (vec2[abajoi].getNombre().equals(atver.getTransiciones().get(i).getEstadoA().getNombre()) && atver.getTransiciones().get(i).getSimbolo().equals(atver.getLenguaje().get(j))) {
+                    posiciontrans2 = i;
+                }
+
+            }
+
+            if (posiciontrans1 != -5 && posiciontrans2 != -5) {
+                listaporsimbolos.add(atver.getTransiciones().get(posiciontrans1).getEstadoB());
+                listaporsimbolos.add(atver.getTransiciones().get(posiciontrans2).getEstadoB());
+            }
+
         }
-    
+
+        return listaporsimbolos;
+    }
+
     ///minimizacion
-      ///crear dos arreglos y una matriz
-            ///llenar arreglo arriba 
-            ///llenar arreglo abajo "lateral"
-            ///llenar matriz con un simbolo para senalar parte que no se utiliza media matriz "0" 
-            ///llenar media  matriz con otro simbolo para senalar la media matriz
-            ///Marcar aceptadores Arriba y abajo se verifican los dos 
-        //llamar metodo verificar marcacion 
-        // marcar la lista que devolvio 
-    
-   public void minimizar(Automata automata)
-   {
-      
-       
-       Estado [] arriba=new Estado[(automata.getEstados().size())-1];
-       Estado [] lateral=new Estado[(automata.getEstados().size())-1];
-       String  [][] matriz=new String[(automata.getEstados().size())-1][(automata.getEstados().size())-1];
-       
-       
-            for (int i = 0; i < arriba.length; i++) 
-            {
-                    arriba[i]=automata.getEstados().get(i);
+    ///crear dos arreglos y una matriz
+    ///llenar arreglo arriba 
+    ///llenar arreglo abajo "lateral"
+    ///llenar matriz con un simbolo para senalar parte que no se utiliza media matriz "0" 
+    ///llenar media  matriz con otro simbolo para senalar la media matriz
+    ///Marcar aceptadores Arriba y abajo se verifican los dos 
+    //llamar metodo verificar marcacion 
+    // marcar la lista que devolvio 
+    public void minimizar(Automata automata) {
+
+        Estado[] arriba = new Estado[(automata.getEstados().size()) - 1];
+        Estado[] lateral = new Estado[(automata.getEstados().size()) - 1];
+        String[][] matriz = new String[(automata.getEstados().size()) - 1][(automata.getEstados().size()) - 1];
+
+        for (int i = 0; i < arriba.length; i++) {
+            arriba[i] = automata.getEstados().get(i);
+        }
+
+        for (int i = 0; i < arriba.length; i++) {
+            lateral[(lateral.length - 1) - i] = automata.getEstados().get(i + 1);
+        }
+
+        ////marcar N para toda la matriz 
+        for (int i = 0; i < arriba.length; i++) {
+
+            for (int j = 0; j < lateral.length; j++) {
+                matriz[i][j] = "N";
             }
+        }
 
-            for (int i = 0; i < arriba.length; i++) 
-            {
-                    lateral[(lateral.length-1)-i]=automata.getEstados().get(i+1);
-            }
-       
-       
-       
-          ////marcar N para toda la matriz 
-            for(int i=0; i<arriba.length;i++)
-            {
-                
-                for (int j = 0; j < lateral.length; j++)
-                { 
-                    matriz[i][j] = "N";
-                }   
-            }
-
-
-
-
-            ////marca 0 para la parte que se utiliza 
-            for (int i = 0; i < arriba.length; i++)
-            {
-                for (int j = 0; j < lateral.length; j++)
-                {
-                    if (i == 0)
-                    {
-                        matriz[i][j] = "0";
-                    }
-                    if (i != 0 && j <(arriba.length)-i )
-                    {
-                        matriz[i][j] = "0";   
-                    }
+        ////marca 0 para la parte que se utiliza 
+        for (int i = 0; i < arriba.length; i++) {
+            for (int j = 0; j < lateral.length; j++) {
+                if (i == 0) {
+                    matriz[i][j] = "0";
+                }
+                if (i != 0 && j < (arriba.length) - i) {
+                    matriz[i][j] = "0";
                 }
             }
-            
-            
-            ///para variables de arriba .. arriba hacia abajo marca X
-            for (int i = 0; i < arriba.length; i++)
-            {
-                for (int j = 0; j < automata.getEstadoAceptador().size(); j++)
-                {
-                    if (automata.getEstadoAceptador().get(j).getNombre().equals(arriba[i].getNombre()))
-                    {
-                         for (int x= 0; x < arriba.length; x++) 
-                         {
-                             if (!matriz[x][i].equals("N"))
-                             {
-                                 
-                                 matriz[x][i]="X";
-                             }
-                             
-                         }
-                    }
-                }
-            }
-            
-            
-             ////para las variable de abajo o las de lado 
-            for (int i = 0; i < lateral.length; i++)
-            {
-                for (int j = 0; j < automata.getEstadoAceptador().size(); j++)
-                {
-                    if (automata.getEstadoAceptador().get(j).getNombre().equals(lateral[i].getNombre()))
-                    {
-                        for (int x = 0; x < lateral.length; x++)
-                        {
-                            if (!matriz[i][x].equals("N"))
-                            {
-                                matriz[i][x] = "X";
-                            }
-                           
+        }
+
+        ///para variables de arriba .. arriba hacia abajo marca X
+        for (int i = 0; i < arriba.length; i++) {
+            for (int j = 0; j < automata.getEstadoAceptador().size(); j++) {
+                if (automata.getEstadoAceptador().get(j).getNombre().equals(arriba[i].getNombre())) {
+                    for (int x = 0; x < arriba.length; x++) {
+                        if (!matriz[x][i].equals("N")) {
+
+                            matriz[x][i] = "X";
                         }
+
                     }
                 }
             }
-            
-            ///ELIMINAR MARCACION SI LOS DOS SON ACEPTADORES
-            
-            for (int y = 0; y < arriba.length; y++) 
-            {
-                for (int x = 0; x < lateral.length; x++) 
-                {
-                    if (!arriba[y].getNombre().equals(lateral[x].getNombre()+"")) 
-                    {
-                        if (arriba[y].isEsAceptador()==true&&lateral[x].isEsAceptador()==true) 
-                        {
-                            if (!matriz[x][y].equals("N")) 
-                            {
-                                matriz[x][y]="0";
-                            }
-                            
+        }
+
+        ////para las variable de abajo o las de lado 
+        for (int i = 0; i < lateral.length; i++) {
+            for (int j = 0; j < automata.getEstadoAceptador().size(); j++) {
+                if (automata.getEstadoAceptador().get(j).getNombre().equals(lateral[i].getNombre())) {
+                    for (int x = 0; x < lateral.length; x++) {
+                        if (!matriz[i][x].equals("N")) {
+                            matriz[i][x] = "X";
                         }
+
                     }
                 }
-           
             }
-            
-            
-            ////marcar verificando
-            for (int ite = 0; ite < 5;ite++)
-            {
-                    for (int i = 0; i < arriba.length; i++)
-                    {
-                        for (int j = 0; j < lateral.length; j++)
-                        {
-                            if (matriz[i][j].equals("0"))
-                            {
+        }
 
-                                LinkedList<Estado> listaDeverificarMarcardo = new LinkedList<Estado>();
+        ///ELIMINAR MARCACION SI LOS DOS SON ACEPTADORES
+        for (int y = 0; y < arriba.length; y++) {
+            for (int x = 0; x < lateral.length; x++) {
+                if (!arriba[y].getNombre().equals(lateral[x].getNombre() + "")) {
+                    if (arriba[y].isEsAceptador() == true && lateral[x].isEsAceptador() == true) {
+                        if (!matriz[x][y].equals("N")) {
+                            matriz[x][y] = "0";
+                        }
 
-                                listaDeverificarMarcardo = verificarMarcacion(automata, arriba,lateral, j, i);
-                                
-                                for (int k = 0; k < listaDeverificarMarcardo.size(); k++) 
-                                {
-                                        System.out.println("lista"+listaDeverificarMarcardo.get(i).getNombre());
-                                }
-                                
-                             
+                    }
+                }
+            }
 
-                                for (int x = 0; x < listaDeverificarMarcardo.size(); x++)
-                                {
-                                    if (listaDeverificarMarcardo.get(x) != null)
-                                    {
-                                       // Console.WriteLine("4");
-                                        int marcadoposarriba = -5;
-                                        int marcadoposabajo = -5;
-                                        ////verifica la posicion matriz arriba y abajo para ubicarlo 
-                                        //// en la matriz de minimizacion y verificar que no sea x o 0 
+        }
 
-                                        for (int y = 0; y < arriba.length; y++)
-                                        {
-                                            if (listaDeverificarMarcardo.get(0).getNombre().equals(arriba[y].getNombre()))
-                                            {
-                                                marcadoposarriba = y;
-                                            }
-                                            if (listaDeverificarMarcardo.get(1).getNombre().equals(lateral[y].getNombre()))
-                                            {
-                                                marcadoposabajo = y;
-                                            }
+        ////marcar verificando
+        for (int ite = 0; ite < 5; ite++) {
+            for (int i = 0; i < arriba.length; i++) {
+                for (int j = 0; j < lateral.length; j++) {
+                    if (matriz[i][j].equals("0")) {
 
-                                        }
+                        LinkedList<Estado> listaDeverificarMarcardo = new LinkedList<Estado>();
 
-                                        
-                                        if(marcadoposabajo!=-5&&marcadoposarriba!=-5)
-                                        {
-                                            if (matriz[marcadoposabajo][marcadoposarriba].equals("0") && !matriz[marcadoposabajo][marcadoposarriba].equals("N"))
-                                             {                                          
-                                                  matriz[i][j] = "X";
-                                                  x = listaDeverificarMarcardo.size(); 
-                                             }
-                                        }
+                        listaDeverificarMarcardo = verificarMarcacion(automata, arriba, lateral, j, i);
+
+                        for (int k = 0; k < listaDeverificarMarcardo.size(); k++) {
+                            System.out.println("lista" + listaDeverificarMarcardo.get(i).getNombre());
+                        }
+
+                        for (int x = 0; x < listaDeverificarMarcardo.size(); x++) {
+                            if (listaDeverificarMarcardo.get(x) != null) {
+                                // Console.WriteLine("4");
+                                int marcadoposarriba = -5;
+                                int marcadoposabajo = -5;
+                                ////verifica la posicion matriz arriba y abajo para ubicarlo 
+                                //// en la matriz de minimizacion y verificar que no sea x o 0 
+
+                                for (int y = 0; y < arriba.length; y++) {
+                                    if (listaDeverificarMarcardo.get(0).getNombre().equals(arriba[y].getNombre())) {
+                                        marcadoposarriba = y;
+                                    }
+                                    if (listaDeverificarMarcardo.get(1).getNombre().equals(lateral[y].getNombre())) {
+                                        marcadoposabajo = y;
                                     }
 
                                 }
+
+                                if (marcadoposabajo != -5 && marcadoposarriba != -5) {
+                                    if (matriz[marcadoposabajo][marcadoposarriba].equals("0") && !matriz[marcadoposabajo][marcadoposarriba].equals("N")) {
+                                        matriz[i][j] = "X";
+                                        x = listaDeverificarMarcardo.size();
+                                    }
+                                }
                             }
-                            
-                           // System.out.println("smamsasm"+matriz[i][j]);
+
                         }
-             
+                    }
+
+                    // System.out.println("smamsasm"+matriz[i][j]);
                 }
+
             }
-            //mostrar matriz
-             for (int i = 0; i < arriba.length; i++)
-            {   String linea="";
-                for (int j = 0; j < lateral.length; j++)
-                {
-                
-                   linea+=matriz[i][j];
-                }
-                System.out.println(linea+"\n");
-            }   
-   }
-    
+        }
+        //mostrar matriz
+        for (int i = 0; i < arriba.length; i++) {
+            String linea = "";
+            for (int j = 0; j < lateral.length; j++) {
+
+                linea += matriz[i][j];
+            }
+            System.out.println(linea + "\n");
+        }
+    }
+
     //Se recorre el automata con el nombre que se le envio para crearle la revera cuando se encuentra:
     //como creamos un nuevo automata mandando los parametros, tenemos que recorrer el LinkedList de estados aceptadores
     //estados y el lenguaje
@@ -963,36 +830,129 @@ public class MetodosDeCreacionLogica implements java.io.Serializable{
                     }
                     for (int h = 0; h < automatas.get(i).getEstadoAceptador().size(); h++) {
                         //agregarTransicionAFN_O_AFNE(automatas.get(i).getNombre() + "_Reversa", automatas.get(i).getEstadoAceptador().get(h).getNombre(), "E", "q");
-                        agregarTransicionAFN_O_AFNE(automatas.get(i).getNombre() + "_Reversa","q", "E", automatas.get(i).getEstadoAceptador().get(h).getNombre());
-                    }   
+                        agregarTransicionAFN_O_AFNE(automatas.get(i).getNombre() + "_Reversa", "q", "E", automatas.get(i).getEstadoAceptador().get(h).getNombre());
+                    }
                 }
 
             }
 
         }
     }
-    
-    
+
     // Metodo para que me devuelva el automata segun el nombre
-    
-    
-    public Automata devolverAutomata(String nombreaAutomata){
+    public Automata devolverAutomata(String nombreaAutomata) {
         for (int i = 0; i < automatas.size(); i++) {
-            if(automatas.get(i).getNombre().equals(nombreaAutomata)){
+            if (automatas.get(i).getNombre().equals(nombreaAutomata)) {
                 return automatas.get(i);
             }
         }
-      return null;
+        return null;
     }
-    
-     
-    
-    ///fin de la clase MetodosDeCreacionLogica
 
+    //Metodo para devolver true si los lenguajes son iguales o folse si no lo son
+    public boolean sonIgualesLenguajes(LinkedList<String> lenguajeUno, LinkedList<String> lenguajeDos) {
+        if (lenguajeUno.size() == lenguajeDos.size()) {
+            for (int i = 0; i < lenguajeUno.size(); i++) {
+                for (int j = 0; j < lenguajeDos.size(); j++) {
+                    if (!lenguajeDos.contains(lenguajeUno.get(i))) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean contiene(LinkedList<Estado> aceptadores, String estado) {
+        for (int i = 0; i < aceptadores.size(); i++) {
+            if (aceptadores.get(i).getNombre().equals(estado)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //Metodo para cambiar los nombres de los estados
+    public void cambiarNombres(Automata automataA, Automata automataB) {
+
+        String estadosNuevos = "";
+        String estadosAceptadoresNueva = "";
+        String lenguajeNuevo = "";
+        int inicioSegundoFor = 0;
+        int contador = 0;
+        for (int h = 0; h < automataA.getLenguaje().size(); h++) {
+            lenguajeNuevo += automataA.getLenguaje().get(h) + ",";
+        }
+
+        //Para los estados
+        for (int j = 0; j < automataA.getEstados().size(); j++) {
+            estadosNuevos += automataA.getEstados().get(j).getNombre() + j + ",";
+            if (contiene(automataA.getEstadoAceptador(), automataA.getEstados().get(j).getNombre())) {
+                estadosAceptadoresNueva += automataA.getEstados().get(j).getNombre() + j + ",";
+            }
+            inicioSegundoFor = j + 1;
+        }
+
+        crearAutomaatAFD_O_AFN(automataA.getNombre() + "_Complemento", "AFD", estadosNuevos, lenguajeNuevo, automataA.getEstadoInicial().getNombre() + "" + automataA.getEstados().indexOf(automataA.getEstadoInicial()), estadosAceptadoresNueva);
+
+////        for (int i = 0; i < automataA.getTransiciones().size(); i++) {
+////            System.out.println("A: " + automataA.getTransiciones().get(i).getEstadoA().getNombre() + automataA.getEstados().indexOf(automataA.getTransiciones().get(i).getEstadoA()) + " lo que busco: " + automataA.getTransiciones().get(i).getEstadoA().getNombre());
+////            System.out.println("lenguaje" + automataA.getTransiciones().get(i).getSimbolo());
+////            System.out.println("B: " + automataA.getTransiciones().get(i).getEstadoB().getNombre() + automataA.getEstados().indexOf(automataA.getTransiciones().get(i).getEstadoB()) + " lo que busco: " + automataA.getTransiciones().get(i).getEstadoB().getNombre());
+////        }
+        for (int i = 0; i < automataA.getTransiciones().size(); i++) {
+            agregarTransicionAFD(automataA.getNombre() + "_Complemento", automataA.getTransiciones().get(i).getEstadoA().getNombre() + automataA.getEstados().indexOf(automataA.getTransiciones().get(i).getEstadoA()), automataA.getTransiciones().get(i).getSimbolo(), automataA.getTransiciones().get(i).getEstadoB().getNombre() + automataA.getEstados().indexOf(automataA.getTransiciones().get(i).getEstadoB()));
+        }
+
+        estadosNuevos = "";
+        estadosAceptadoresNueva = "";
+        contador = inicioSegundoFor;
+
+        //Para automataB
+        for (int j = 0; j < automataB.getEstados().size(); j++) {
+            estadosNuevos += automataB.getEstados().get(j).getNombre() + contador + ",";
+            if (contiene(automataB.getEstadoAceptador(), automataB.getEstados().get(j).getNombre())) {
+                estadosAceptadoresNueva += automataB.getEstados().get(j).getNombre() + contador + ",";
+            }
+            contador += 1;
+            //inicioSegundoFor += 1;
+        }
+
+        crearAutomaatAFD_O_AFN(automataB.getNombre() + "_Complemento", "AFD", estadosNuevos, lenguajeNuevo, automataB.getEstadoInicial().getNombre() + "" + (automataB.getEstados().indexOf(automataB.getEstadoInicial()) + inicioSegundoFor), estadosAceptadoresNueva);
+        System.out.println("Nombre: " + automataB.getNombre() + "_Complemento");
+//        for (int i = 0; i < automataB.getTransiciones().size(); i++) {
+//            System.out.println("A: " + automataB.getTransiciones().get(i).getEstadoA().getNombre() + (automataB.getEstados().indexOf(automataB.getTransiciones().get(i).getEstadoA()) + inicioSegundoFor) + " lo que busco: " + automataB.getTransiciones().get(i).getEstadoA().getNombre());
+//            System.out.println("lenguaje" + automataB.getTransiciones().get(i).getSimbolo());
+//            System.out.println("B: " + automataB.getTransiciones().get(i).getEstadoB().getNombre() + (automataB.getEstados().indexOf(automataB.getTransiciones().get(i).getEstadoB()) + inicioSegundoFor) + " lo que busco: " + automataB.getTransiciones().get(i).getEstadoB().getNombre());
+//        }
+        for (int i = 0; i < automataB.getTransiciones().size(); i++) {
+            agregarTransicionAFD(automataB.getNombre() + "_Complemento",automataB.getTransiciones().get(i).getEstadoA().getNombre() + (automataB.getEstados().indexOf(automataB.getTransiciones().get(i).getEstadoA()) + inicioSegundoFor),automataB.getTransiciones().get(i).getSimbolo(),automataB.getTransiciones().get(i).getEstadoB().getNombre() + (automataB.getEstados().indexOf(automataB.getTransiciones().get(i).getEstadoB()) + inicioSegundoFor));
+        }
+        
+    }
+
+    //Metodo de la concatenacion Thompson
+    public void metodoConcatenacion(String automataUno, String automataDos) {
+        //System.out.println("Automata uno: "+automataUno+" Automata Dos: "+automataDos);
+        Automata automataA = devolverAutomata(automataUno);
+        Automata automataB = devolverAutomata(automataDos);
+
+        if (sonIgualesLenguajes(automataA.getLenguaje(), automataB.getLenguaje())) {
+            cambiarNombres(automataA, automataB);
+            System.out.println("Son iguales");
+
+        } else {
+            System.out.println("NO se puede realizar la concatenacion por que No son iguales los lenguajes");
+        }
+    }
+
+    ///fin de la clase MetodosDeCreacionLogica
     public void setAutomatas(LinkedList<Automata> automatas) {
         this.automatas = automatas;
     }
-    
+
     public LinkedList<Automata> getAutomatas() {
         return automatas;
     }
