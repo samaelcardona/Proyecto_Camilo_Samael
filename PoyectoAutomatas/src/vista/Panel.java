@@ -37,7 +37,7 @@ public class Panel extends javax.swing.JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.drawRect(5, 310, 540, 300);
+        g.drawRect(5, 310, 540, 350);
 
         if (automata.getNombre() != null) {
             graficarUno(g);
