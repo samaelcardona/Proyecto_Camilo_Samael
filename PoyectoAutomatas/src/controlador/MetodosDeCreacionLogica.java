@@ -1149,7 +1149,6 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
     }
 
     //Metodo de Cierre de Kleene A*
-    
     //se acceden a los estados, al lenguaje y a los estados aceptadores
     // se hacen las transiciones requeridas para hacer Kleene
     public void metodoKleene(String automataUno) {
@@ -1202,6 +1201,13 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
         agregarTransicionAFN_O_AFNE(automata.getNombre() + "_Kleene", "q0", "E", estadoInicial);
         agregarTransicionAFN_O_AFNE(automata.getNombre() + "_Kleene", "q0", "E", "q1");
 
+    }
+    
+    
+    
+    public void prueba(){
+        
+        
     }
 
 ///fin de la clase MetodosDeCreacionLogica

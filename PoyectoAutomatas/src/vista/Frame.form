@@ -430,6 +430,10 @@
             </Property>
             <Property name="text" type="java.lang.String" value="PROYECTO AUTOMATAS"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="jLabel1MouseDragged"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel1MousePressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jblAfd">
           <Properties>

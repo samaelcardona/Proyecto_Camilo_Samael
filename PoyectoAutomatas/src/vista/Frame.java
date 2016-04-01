@@ -7,6 +7,9 @@ package vista;
 
 import controlador.MetodosDeCreacionLogica;
 import controlador.*;
+import java.awt.Label;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -137,6 +140,16 @@ public class Frame extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 1, 11)); // NOI18N
         jLabel1.setText("PROYECTO AUTOMATAS");
+        jLabel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jLabel1MouseDragged(evt);
+            }
+        });
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel1MousePressed(evt);
+            }
+        });
 
         jblAfd.setText("ADF");
 
@@ -1069,9 +1082,29 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_panel1MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        mcl.metodoKleene(jComboBox2.getSelectedItem()+"");
+        mcl.metodoKleene(jComboBox2.getSelectedItem() + "");
         metodoComboBox();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
+        //this.eventoMouse(evt);
+    }//GEN-LAST:event_jLabel1MousePressed
+
+    private void jLabel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseDragged
+
+        //this.puntoMouse(jLabel1);
+    }//GEN-LAST:event_jLabel1MouseDragged
+
+//    public void puntoMouse(Label label) {
+//        Point point = MouseInfo.getPointerInfo().getLocation();
+//        System.out.println(point);
+//        label.setLocation(point.x - x, point.y - y);
+//    }
+//    
+//    public void eventoMouse(java.awt.event.MouseEvent evt){
+//        x=evt.getX();
+//        y=evt.getY();
+//    }
 
     private void metodoComboBox() {
         cbSeleccionarAutomata.removeAllItems();

@@ -43,6 +43,10 @@ public class Panel extends javax.swing.JPanel {
             graficarUno(g);
         }
         //g.drawArc(WIDTH, WIDTH, WIDTH, HEIGHT, contador, cadaCuanto);
+        //g.drawArc( 50, 400, 80, 80, 0, 360 );
+        //g.drawArc( 100, 35, 80, 80, 0, 110 );
+        //g.drawArc( 185, 35, 80, 80, 0, -270 );
+
 
         repaint();
     }
@@ -100,6 +104,15 @@ public class Panel extends javax.swing.JPanel {
         }
 
     }
+    
+    public void graficarDos(Graphics g){
+        
+    }
+//    public int contarEstados(){
+//        for (int i = 0; i < automata.getEstados().size(); i++) {
+//            
+//        }
+//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
