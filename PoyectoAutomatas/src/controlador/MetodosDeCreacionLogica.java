@@ -641,141 +641,221 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
     ///Marcar aceptadores Arriba y abajo se verifican los dos 
     //llamar metodo verificar marcacion 
     // marcar la lista que devolvio 
-    public void minimizar(Automata automata) {
+    public void minimizar(Automata automatax) 
+    {
+        Automata automata=new Automata(automatax.getNombre(),automatax.getTipoAutomata(), automatax.getEstados(), automatax.getLenguaje(), automatax.getEstadoInicial(), automatax.getEstadoAceptador());
 
-        Estado[] arriba = new Estado[(automata.getEstados().size()) - 1];
-        Estado[] lateral = new Estado[(automata.getEstados().size()) - 1];
-        String[][] matriz = new String[(automata.getEstados().size()) - 1][(automata.getEstados().size()) - 1];
-
-        for (int i = 0; i < arriba.length; i++) {
-            arriba[i] = automata.getEstados().get(i);
-        }
-
-        for (int i = 0; i < arriba.length; i++) {
-            lateral[(lateral.length - 1) - i] = automata.getEstados().get(i + 1);
-        }
-
-        ////marcar N para toda la matriz 
-        for (int i = 0; i < arriba.length; i++) {
-
-            for (int j = 0; j < lateral.length; j++) {
-                matriz[i][j] = "N";
+      automata.setTransiciones(automatax.getTransiciones());
+      
+        
+      
+           
+        
+       ///eliminar inhalcanzables
+        automata.setNombre("copia");
+        
+        
+        
+        
+        System.out.println("nombre cc:"+automata.getNombre());
+       
+       Estado [] arriba=new Estado[(automata.getEstados().size())-1];
+       Estado [] lateral=new Estado[(automata.getEstados().size())-1];
+       String  [][] matriz=new String[(automata.getEstados().size())-1][(automata.getEstados().size())-1];
+       
+       
+            for (int i = 0; i < arriba.length; i++) 
+            {
+                    arriba[i]=automata.getEstados().get(i);
             }
-        }
 
-        ////marca 0 para la parte que se utiliza 
-        for (int i = 0; i < arriba.length; i++) {
-            for (int j = 0; j < lateral.length; j++) {
-                if (i == 0) {
-                    matriz[i][j] = "0";
-                }
-                if (i != 0 && j < (arriba.length) - i) {
-                    matriz[i][j] = "0";
-                }
+            for (int i = 0; i < arriba.length; i++) 
+            {
+                    lateral[(lateral.length-1)-i]=automata.getEstados().get(i+1);
             }
-        }
+       
+       
+       
+          ////marcar N para toda la matriz 
+            for(int i=0; i<arriba.length;i++)
+            {
+                
+                for (int j = 0; j < lateral.length; j++)
+                { 
+                    matriz[i][j] = "N";
+                }   
+            }
 
-        ///para variables de arriba .. arriba hacia abajo marca X
-        for (int i = 0; i < arriba.length; i++) {
-            for (int j = 0; j < automata.getEstadoAceptador().size(); j++) {
-                if (automata.getEstadoAceptador().get(j).getNombre().equals(arriba[i].getNombre())) {
-                    for (int x = 0; x < arriba.length; x++) {
-                        if (!matriz[x][i].equals("N")) {
 
-                            matriz[x][i] = "X";
-                        }
 
+
+            ////marca 0 para la parte que se utiliza 
+            for (int i = 0; i < arriba.length; i++)
+            {
+                for (int j = 0; j < lateral.length; j++)
+                {
+                    if (i == 0)
+                    {
+                        matriz[i][j] = "0";
+                    }
+                    if (i != 0 && j <(arriba.length)-i )
+                    {
+                        matriz[i][j] = "0";   
                     }
                 }
             }
-        }
-
-        ////para las variable de abajo o las de lado 
-        for (int i = 0; i < lateral.length; i++) {
-            for (int j = 0; j < automata.getEstadoAceptador().size(); j++) {
-                if (automata.getEstadoAceptador().get(j).getNombre().equals(lateral[i].getNombre())) {
-                    for (int x = 0; x < lateral.length; x++) {
-                        if (!matriz[i][x].equals("N")) {
-                            matriz[i][x] = "X";
-                        }
-
+            
+            
+            ///para variables de arriba .. arriba hacia abajo marca X
+            for (int i = 0; i < arriba.length; i++)
+            {
+                for (int j = 0; j < automata.getEstadoAceptador().size(); j++)
+                {
+                    if (automata.getEstadoAceptador().get(j).getNombre().equals(arriba[i].getNombre()))
+                    {
+                         for (int x= 0; x < arriba.length; x++) 
+                         {
+                             if (!matriz[x][i].equals("N"))
+                             {
+                                 
+                                 matriz[x][i]="X";
+                             }
+                             
+                         }
                     }
                 }
             }
-        }
-
-        ///ELIMINAR MARCACION SI LOS DOS SON ACEPTADORES
-        for (int y = 0; y < arriba.length; y++) {
-            for (int x = 0; x < lateral.length; x++) {
-                if (!arriba[y].getNombre().equals(lateral[x].getNombre() + "")) {
-                    if (arriba[y].isEsAceptador() == true && lateral[x].isEsAceptador() == true) {
-                        if (!matriz[x][y].equals("N")) {
-                            matriz[x][y] = "0";
+            
+            
+             ////para las variable de abajo o las de lado 
+            for (int i = 0; i < lateral.length; i++)
+            {
+                for (int j = 0; j < automata.getEstadoAceptador().size(); j++)
+                {
+                    if (automata.getEstadoAceptador().get(j).getNombre().equals(lateral[i].getNombre()))
+                    {
+                        for (int x = 0; x < lateral.length; x++)
+                        {
+                            if (!matriz[i][x].equals("N"))
+                            {
+                                matriz[i][x] = "X";
+                            }
+                           
                         }
-
                     }
                 }
             }
-
-        }
-
-        ////marcar verificando
-        for (int ite = 0; ite < 5; ite++) {
-            for (int i = 0; i < arriba.length; i++) {
-                for (int j = 0; j < lateral.length; j++) {
-                    if (matriz[i][j].equals("0")) {
-
-                        LinkedList<Estado> listaDeverificarMarcardo = new LinkedList<Estado>();
-
-                        listaDeverificarMarcardo = verificarMarcacion(automata, arriba, lateral, j, i);
-
-                        for (int k = 0; k < listaDeverificarMarcardo.size(); k++) {
-                            System.out.println("lista" + listaDeverificarMarcardo.get(i).getNombre());
+            
+            ///ELIMINAR MARCACION SI LOS DOS SON ACEPTADORES
+            
+            for (int y = 0; y < arriba.length; y++) 
+            {
+                for (int x = 0; x < lateral.length; x++) 
+                {
+                    if (!arriba[y].getNombre().equals(lateral[x].getNombre()+"")) 
+                    {
+                        if (arriba[y].isEsAceptador()==true&&lateral[x].isEsAceptador()==true) 
+                        {
+                            if (!matriz[x][y].equals("N")) 
+                            {
+                                matriz[x][y]="0";
+                            }
+                            
                         }
+                    }
+                }
+           
+            }
+            
+            ////marcar verificando
+            for (int ite = 0; ite < 5;ite++)
+            {
+                    for (int i = 0; i < arriba.length; i++)
+                    {
+                        for (int j = 0; j < lateral.length; j++)
+                        {
+                            if (matriz[i][j].equals("0"))
+                            {
 
-                        for (int x = 0; x < listaDeverificarMarcardo.size(); x++) {
-                            if (listaDeverificarMarcardo.get(x) != null) {
-                                // Console.WriteLine("4");
-                                int marcadoposarriba = -5;
-                                int marcadoposabajo = -5;
-                                ////verifica la posicion matriz arriba y abajo para ubicarlo 
-                                //// en la matriz de minimizacion y verificar que no sea x o 0 
+                                LinkedList<Estado> listaDeverificarMarcardo = new LinkedList<Estado>();
 
-                                for (int y = 0; y < arriba.length; y++) {
-                                    if (listaDeverificarMarcardo.get(0).getNombre().equals(arriba[y].getNombre())) {
-                                        marcadoposarriba = y;
+                                listaDeverificarMarcardo = verificarMarcacion(automata, arriba,lateral, j, i);
+                                
+                                
+                             
+
+                                for (int x = 0; x < listaDeverificarMarcardo.size(); x++)
+                                {
+                                    if (listaDeverificarMarcardo.get(x) != null)
+                                    {
+                                       
+                                        int marcadoposarriba = -5;
+                                        int marcadoposabajo = -5;
+                                        int marcadoposarriba2= -5;
+                                        int marcadoposabajo2 = -5;
+                                        ////verifica la posicion matriz arriba y abajo para ubicarlo 
+                                        //// en la matriz de minimizacion y verificar que no sea x o 0 
+
+                                        for (int y = 0; y < arriba.length; y++)
+                                        {
+                                            if (listaDeverificarMarcardo.get(0).getNombre().equals(arriba[y].getNombre()))
+                                            {
+                                                marcadoposarriba = y;
+                                            }
+                                            if (listaDeverificarMarcardo.get(1).getNombre().equals(lateral[y].getNombre()))
+                                            {
+                                                marcadoposabajo = y;
+                                            }
+                                            if (listaDeverificarMarcardo.get(2).getNombre().equals(arriba[y].getNombre()))
+                                            {
+                                                marcadoposarriba2= y;
+                                            }
+                                            if (listaDeverificarMarcardo.get(3).getNombre().equals(lateral[y].getNombre()))
+                                            {
+                                                marcadoposabajo2= y;
+                                            }
+                                            
+
+                                        }
+
+                                        
+                                        if(marcadoposabajo!=-5&&marcadoposarriba!=-5&&marcadoposabajo2!=-5&&marcadoposarriba2!=-5)
+                                        {
+                                            if (matriz[marcadoposabajo][marcadoposarriba].equals("X") && !matriz[marcadoposabajo][marcadoposarriba].equals("N"))
+                                             {                                          
+                                                  matriz[i][j] = "X";
+                                                  x = listaDeverificarMarcardo.size(); 
+                                             }
+                                            
+                                            if (matriz[marcadoposabajo2][marcadoposarriba2].equals("X") && !matriz[marcadoposabajo2][marcadoposarriba2].equals("N"))
+                                             {                                          
+                                                  matriz[i][j] = "X";
+                                                  x = listaDeverificarMarcardo.size(); 
+                                             }
+                                        }
                                     }
-                                    if (listaDeverificarMarcardo.get(1).getNombre().equals(lateral[y].getNombre())) {
-                                        marcadoposabajo = y;
-                                    }
 
-                                }
-
-                                if (marcadoposabajo != -5 && marcadoposarriba != -5) {
-                                    if (matriz[marcadoposabajo][marcadoposarriba].equals("0") && !matriz[marcadoposabajo][marcadoposarriba].equals("N")) {
-                                        matriz[i][j] = "X";
-                                        x = listaDeverificarMarcardo.size();
-                                    }
                                 }
                             }
-
+                            
                         }
-                    }
-
-                    // System.out.println("smamsasm"+matriz[i][j]);
+             
                 }
-
             }
-        }
-        //mostrar matriz
-        for (int i = 0; i < arriba.length; i++) {
-            String linea = "";
-            for (int j = 0; j < lateral.length; j++) {
-
-                linea += matriz[i][j];
+            
+         ///hacer agrupaciones
+            
+            
+            //mostrar matriz
+             for (int i = 0; i < arriba.length; i++)
+            {   String linea="";
+                for (int j = 0; j < lateral.length; j++)
+                {
+                
+                   linea+=matriz[i][j];
+                }
+                System.out.println(linea+"\n");
             }
-            System.out.println(linea + "\n");
-        }
     }
 
     //Se recorre el automata con el nombre que se le envio para crearle la revera cuando se encuentra:
