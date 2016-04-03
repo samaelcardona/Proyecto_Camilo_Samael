@@ -6,6 +6,8 @@
 package controlador;
 
 import com.sun.org.apache.bcel.internal.generic.ATHROW;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -589,49 +591,94 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
 
     }
 
-    ///minimizar
+   ///minimizar
     ///verificar marcacnion para minimizar
-    public LinkedList<Estado> verificarMarcacion(Automata atver, Estado[] vec1, Estado[] vec2, int arribai, int abajoi) {
+    ///lista los estados a los cuales va 
+    //retorna la lista para hacer ya la verificacion en el metodo minimizar 
+    public LinkedList<LinkedList<Estado>> verificarMarcacion(Automata atver, Estado[] vec1, Estado[] vec2, int arribai, int abajoi) {
         ////posiciones para las transiciones
 
-        System.out.println("vec1 " + vec1[arribai].getNombre());
+       
+            ////esta lista se crea para que guarde los estados por cada simbolo que encuentre
+            LinkedList<LinkedList<Estado>> listaporsimbolos = new LinkedList<>();
 
-        System.out.println("vec2 " + vec2[abajoi].getNombre() + "\n" + "-----" + "\n");
+            ///// aca verifico por cada simbolo si con el mismo simbolo 
+            ////salen los dos estados ... verifico si estan vacios
+            for (int j = 0; j < atver.getLenguaje().size(); j++)
+            {
+                int posiciontrans1 = -5;
+                int posiciontrans2 = -5;
 
-        ////esta lista se crea para que guarde los estados por cada simbolo que encuentre
-        LinkedList<Estado> listaporsimbolos = new LinkedList<Estado>();
+                for (int i = 0; i < atver.getTransiciones().size(); i++)
+                {
+                    if (vec1[arribai].getNombre().equals(atver.getTransiciones().get(i).getEstadoA().getNombre()) && atver.getTransiciones().get(i).getSimbolo().equals(atver.getLenguaje().get(j)))
+                    {
 
-        ///// aca verifico por cada simbolo si con el mismo simbolo 
-        ////salen los dos estados ... verifico si estan vacios
-        for (int j = 0; j < atver.getLenguaje().size(); j++) {
-            int posiciontrans1 = -5;
-            int posiciontrans2 = -5;
+                        posiciontrans1 = i;
+                    }
 
-            for (int i = 0; i < atver.getTransiciones().size(); i++) {
-                if (vec1[arribai].getNombre().equals(atver.getTransiciones().get(i).getEstadoA().getNombre()) && atver.getTransiciones().get(i).getSimbolo().equals(atver.getLenguaje().get(j))) {
+                }
 
-                    posiciontrans1 = i;
+                for (int i = 0; i < atver.getTransiciones().size(); i++)
+                {
+                    if (vec2[abajoi].getNombre().equals(atver.getTransiciones().get(i).getEstadoA().getNombre()) && atver.getTransiciones().get(i).getSimbolo().equals(atver.getLenguaje().get(j)))
+                    {
+                        posiciontrans2 = i;
+                    }
+
+                }
+
+                if (posiciontrans1 != -5 && posiciontrans2 != -5)
+                {
+                    LinkedList<Estado> estados=new LinkedList<>();
+
+                    estados.add(atver.getTransiciones().get(posiciontrans1).getEstadoB());
+                    estados.add(atver.getTransiciones().get(posiciontrans2).getEstadoB());
+
+                    listaporsimbolos.addLast(estados);
                 }
 
             }
-
-            for (int i = 0; i < atver.getTransiciones().size(); i++) {
-                if (vec2[abajoi].getNombre().equals(atver.getTransiciones().get(i).getEstadoA().getNombre()) && atver.getTransiciones().get(i).getSimbolo().equals(atver.getLenguaje().get(j))) {
-                    posiciontrans2 = i;
-                }
-
-            }
-
-            if (posiciontrans1 != -5 && posiciontrans2 != -5) {
-                listaporsimbolos.add(atver.getTransiciones().get(posiciontrans1).getEstadoB());
-                listaporsimbolos.add(atver.getTransiciones().get(posiciontrans2).getEstadoB());
-            }
-
-        }
 
         return listaporsimbolos;
     }
-
+    
+    ///metodo para hacer las agrupaciones recibe una lista de dos y genera sus agrupaciones
+    
+    public ArrayList<String> agrupar(LinkedList<ArrayList<String>> grupos,ArrayList<String> poragrupar)
+    {
+        ArrayList<String> nueva=new ArrayList<>();
+        for (int i = 0; i < poragrupar.size(); i++) {
+            nueva.add(poragrupar.get(i));
+        }
+        
+        
+        for (int i = 0; i < grupos.size(); i++) 
+        {
+            if (!grupos.get(i).equals(poragrupar)) 
+            {
+                if(grupos.get(i).contains(poragrupar.get(0)))
+                {
+                    for (int j = 0; j < grupos.get(i).size(); j++) 
+                    {
+                      nueva.add(grupos.get(i).get(j));  
+                    }
+                }
+                
+                if(grupos.get(i).contains(poragrupar.get(1)))
+                {
+                    for (int j = 0; j < grupos.get(i).size(); j++) 
+                    {
+                      nueva.add(grupos.get(i).get(j));  
+                    }
+                }
+            }
+        }
+        
+        return nueva;
+    }
+      
+    
     ///minimizacion
     ///crear dos arreglos y una matriz
     ///llenar arreglo arriba 
@@ -645,21 +692,50 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
     {
         Automata automata=new Automata(automatax.getNombre(),automatax.getTipoAutomata(), automatax.getEstados(), automatax.getLenguaje(), automatax.getEstadoInicial(), automatax.getEstadoAceptador());
 
-      automata.setTransiciones(automatax.getTransiciones());
-      
-        
-      
-           
+        automata.setTransiciones(automatax.getTransiciones()); 
         
        ///eliminar inhalcanzables
-        automata.setNombre("copia");
+        LinkedList<Estado> inhalcanzables=new LinkedList<>();
         
+        for (int i = 0; i < automata.getEstados().size(); i++) 
+        {
+            boolean inhalcanzable=true;
+                    
+           for (int j = 0; j < automata.getTransiciones().size(); j++) 
+            {
+                if(automata.getEstados().get(i).getNombre().equals(automata.getTransiciones().get(j).getEstadoA().getNombre()))
+                {
+                       inhalcanzable=false;                                        
+                }
+                
+                //por si es aceptador entonces no es inhalcanzable 
+                
+//                if (automata.getEstados().get(i).isEsAceptador()==true) 
+//                {
+//                       inhalcanzable=false;   
+//                }
+            }
+           
+            if (inhalcanzable==true) 
+            {
+               inhalcanzables.add(automata.getEstados().get(i));
+            }
+        }
+    
+        //elimino los estados que estan en la lista de los inhalcanzables    
+        for (int i = 0; i < automata.getEstados().size(); i++) 
+        {
+            for (int j = 0; j < inhalcanzables.size(); j++) {
+                
+                if (automata.getEstados().get(i).getNombre().equals(inhalcanzables.get(j).getNombre())) 
+                {
+                    automata.getEstados().remove(i);
+                }
+            }
+        }
         
-        
-        
-        System.out.println("nombre cc:"+automata.getNombre());
-       
-       Estado [] arriba=new Estado[(automata.getEstados().size())-1];
+       // se crea a matriz 
+           Estado [] arriba=new Estado[(automata.getEstados().size())-1];
        Estado [] lateral=new Estado[(automata.getEstados().size())-1];
        String  [][] matriz=new String[(automata.getEstados().size())-1][(automata.getEstados().size())-1];
        
@@ -768,7 +844,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
             }
             
             ////marcar verificando
-            for (int ite = 0; ite < 5;ite++)
+            for (int ite = 0; ite < 10;ite++)
             {
                     for (int i = 0; i < arriba.length; i++)
                     {
@@ -777,64 +853,63 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                             if (matriz[i][j].equals("0"))
                             {
 
-                                LinkedList<Estado> listaDeverificarMarcardo = new LinkedList<Estado>();
+                                LinkedList<LinkedList<Estado>> listaDeverificarMarcardo = new LinkedList<LinkedList<Estado>>();
 
                                 listaDeverificarMarcardo = verificarMarcacion(automata, arriba,lateral, j, i);
                                 
-                                
+                                        
                              
 
                                 for (int x = 0; x < listaDeverificarMarcardo.size(); x++)
                                 {
-                                    if (listaDeverificarMarcardo.get(x) != null)
+                                                                          
+                                    int marcadoposarriba = -5;
+                                    int marcadoposabajo = -5;
+                                    int marcadoposarriba2 = -5;
+                                    int marcadoposabajo2 = -5;
+
+                                    ////verifica la posicion matriz arriba y abajo para ubicarlo 
+                                    //// en la matriz de minimizacion y verificar que no sea x o 0 
+
+                                    for (int y = 0; y < arriba.length; y++)
                                     {
-                                       
-                                        int marcadoposarriba = -5;
-                                        int marcadoposabajo = -5;
-                                        int marcadoposarriba2= -5;
-                                        int marcadoposabajo2 = -5;
-                                        ////verifica la posicion matriz arriba y abajo para ubicarlo 
-                                        //// en la matriz de minimizacion y verificar que no sea x o 0 
-
-                                        for (int y = 0; y < arriba.length; y++)
+                                        if (listaDeverificarMarcardo.get(x).get(0).getNombre().equals(arriba[y].getNombre()))
                                         {
-                                            if (listaDeverificarMarcardo.get(0).getNombre().equals(arriba[y].getNombre()))
-                                            {
-                                                marcadoposarriba = y;
-                                            }
-                                            if (listaDeverificarMarcardo.get(1).getNombre().equals(lateral[y].getNombre()))
-                                            {
-                                                marcadoposabajo = y;
-                                            }
-                                            if (listaDeverificarMarcardo.get(2).getNombre().equals(arriba[y].getNombre()))
-                                            {
-                                                marcadoposarriba2= y;
-                                            }
-                                            if (listaDeverificarMarcardo.get(3).getNombre().equals(lateral[y].getNombre()))
-                                            {
-                                                marcadoposabajo2= y;
-                                            }
-                                            
-
+                                            marcadoposarriba = y;
+                                        }
+                                        if (listaDeverificarMarcardo.get(x).get(1).getNombre().equals(lateral[y].getNombre()))
+                                        {
+                                            marcadoposabajo = y;
+                                        }
+                                        if (listaDeverificarMarcardo.get(x).get(1).getNombre().equals(arriba[y].getNombre()))
+                                        {
+                                            marcadoposarriba2 = y;
+                                        }
+                                        if (listaDeverificarMarcardo.get(x).get(0).getNombre().equals(lateral[y].getNombre()))
+                                        {
+                                            marcadoposabajo2 = y;
                                         }
 
-                                        
-                                        if(marcadoposabajo!=-5&&marcadoposarriba!=-5&&marcadoposabajo2!=-5&&marcadoposarriba2!=-5)
-                                        {
-                                            if (matriz[marcadoposabajo][marcadoposarriba].equals("X") && !matriz[marcadoposabajo][marcadoposarriba].equals("N"))
-                                             {                                          
-                                                  matriz[i][j] = "X";
-                                                  x = listaDeverificarMarcardo.size(); 
-                                             }
-                                            
-                                            if (matriz[marcadoposabajo2][marcadoposarriba2].equals("X") && !matriz[marcadoposabajo2][marcadoposarriba2].equals("N"))
-                                             {                                          
-                                                  matriz[i][j] = "X";
-                                                  x = listaDeverificarMarcardo.size(); 
-                                             }
-                                        }
                                     }
 
+
+                                    if(marcadoposabajo!=-5&&marcadoposarriba!=-5)
+                                    {
+                                        if (matriz[marcadoposabajo][marcadoposarriba].equals("X") && !matriz[marcadoposabajo][marcadoposarriba].equals("N"))
+                                         {                                          
+                                              matriz[i][j] = "X";
+                                              x = listaDeverificarMarcardo.size(); 
+                                         }
+                                    }
+                                    if(marcadoposabajo2!=-5&&marcadoposarriba2!=-5)
+                                    {
+                                        if (matriz[marcadoposabajo2][marcadoposarriba2].equals("X") && !matriz[marcadoposabajo2][marcadoposarriba2].equals("N"))
+                                         {                                          
+                                              matriz[i][j] = "X";
+                                              x = listaDeverificarMarcardo.size(); 
+                                         }
+                                    }
+                                    
                                 }
                             }
                             
@@ -845,6 +920,116 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
             
          ///hacer agrupaciones
             
+            ///sacar agrupaciones de a dos
+            
+            LinkedList<ArrayList<String>> grupos=new LinkedList<>();
+            
+            for (int i = 0; i < arriba.length; i++) 
+            {
+                for (int j = 0; j < lateral.length; j++) 
+                {
+                    if (matriz[i][j].equals("0")) 
+                    {
+                        ArrayList<String> par=new ArrayList<>();
+                        
+                        par.add(arriba[j].getNombre());
+                        par.add(lateral[i].getNombre());
+                        
+                        grupos.add(par);
+                        
+//                        System.out.println("estado I"+arriba[j].getNombre());
+//                        System.out.println("estado J"+lateral[i].getNombre());
+//                        System.out.println("\n");
+                    }
+                }
+            }
+            
+            
+            LinkedList<ArrayList<String>> agrupados=new LinkedList<>();
+             
+            for (int i = 0; i < grupos.size(); i++) 
+            {
+               agrupados.add(agrupar(grupos, grupos.get(i)));
+            }
+
+            ///ordenar listas
+            for (int i = 0; i < agrupados.size(); i++) 
+            {
+                Collections.sort(agrupados.get(i));
+            }
+            
+            
+             
+             ///eliminar listas iguales de agrupados 
+             
+             for (int i = 0; i < agrupados.size(); i++) 
+             {
+                 for (int j = 0; j < agrupados.size(); j++) 
+                 {
+                     if (i!=j) 
+                     {
+                         if (agrupados.get(i).equals(agrupados.get(j))) 
+                         {
+                             agrupados.remove(agrupados.get(j));
+                         }
+                     }
+                 }
+             }
+             
+             
+             ///eliminar repetidos dentro de las listas
+             
+              for (int i = 0; i < agrupados.size(); i++) 
+             {
+                 for (int j = 0; j < agrupados.get(i).size(); j++) 
+                 {
+                    for (int k = 0; k < agrupados.get(i).size(); k++) 
+                    {
+                        if (j!=k) 
+                        {
+                            if (agrupados.get(i).get(j).equals(agrupados.get(i).get(k))) 
+                            {
+                                agrupados.get(i).remove(agrupados.get(i).get(k));
+                            }
+                        }
+                    }
+                 }
+             }
+              
+              
+              /////agregar estados que faltan a agrupados para tener todas las agrupaciones
+              for (int i = 0; i < automata.getEstados().size(); i++) 
+              {
+                  boolean esta=false;
+                  for (int j = 0; j < agrupados.size(); j++) 
+                  {
+                      for (int k = 0; k < agrupados.get(j).size(); k++) 
+                      {     
+                        if(automata.getEstados().get(i).getNombre().equals(agrupados.get(j).get(k)))
+                        {
+                            esta=true;
+                        }
+                      }
+                  }
+                  if(esta==false)
+                  {
+                      ArrayList<String> nuevo=new ArrayList<>();
+                      nuevo.add(automata.getEstados().get(i).getNombre());
+                      
+                     agrupados.add(nuevo);
+                  }
+              }
+
+              
+             System.out.println("\nordenados\n");
+             for (int i = 0; i <agrupados.size(); i++) 
+            {
+                System.out.println("lista"+i+""+agrupados.get(i));
+            }
+            
+             ///crear nuevo automata para agregarlo a la lista de automatas
+             
+             
             
             //mostrar matriz
              for (int i = 0; i < arriba.length; i++)
@@ -856,6 +1041,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                 }
                 System.out.println(linea+"\n");
             }
+            
     }
 
     //Se recorre el automata con el nombre que se le envio para crearle la revera cuando se encuentra:
