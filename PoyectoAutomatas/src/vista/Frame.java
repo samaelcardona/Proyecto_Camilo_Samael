@@ -815,6 +815,8 @@ public class Frame extends javax.swing.JFrame {
                 mcl.minimizar(mcl.getAutomatas().get(i));
             }
         }
+        
+        this.metodoComboBox();
 
     }//GEN-LAST:event_jButton9ActionPerformed
 
