@@ -1383,6 +1383,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
         }
     }
 
+    
     //Metodo Union
     public void metodoUnion(String automataUno, String automataDos) {
 
@@ -1519,11 +1520,462 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
     }
     
     
+    ////union interseccion creando un automata determinista
     
-    public void prueba(){
+     /// <summary>
+        /// verifica que el lenguaje de los dos automatas sea igual
+        /// </summary>
+        /// <param name="at1"></param>
+        /// <param name="at2"></param>
+        /// <returns></returns>
+        public boolean verificar_lenguaje(Automata at1, Automata at2)
+        {
+            boolean varbool = false;
+
+            if (at1.getLenguaje().size()==at2.getLenguaje().size()) {
+               
+                for (int i = 0; i < at1.getLenguaje().size(); i++)
+                {
+                    for (int j = 0; j < at2.getLenguaje().size(); j++) 
+                    {
+                        if (at2.getLenguaje().get(j).equals(at1.getLenguaje().get(i)))
+                        {
+                            varbool = true;
+                        }
+                    }
+                    
+                    if (varbool==false) 
+                    { 
+                         i = at1.getLenguaje().size();
+                        return varbool;
+                         
+                    }
+                }
+            }
+            
+            return varbool;
+        }
+
+
+
+        /// <summary>
+        /// retorna el estado para un simbolo dado este despues se utiliza para las transiciones
+        /// busca con un simbolo a que estado va 
+        /// </summary>
+        /// <param name="at"></param>
+        /// <param name="nombreestado"></param>
+        /// <param name="simbolo"></param>
+        /// <returns></returns>
+        public Estado verficar_estado_transicion(Automata at, String nombreestado, String simbolo)
+        {
+            Estado newestado = new Estado();
+
+            for (int i = 0; i < at.getTransiciones().size(); i++)
+            {
+                if (at.getTransiciones().get(i).getEstadoA().getNombre().equals(nombreestado) && at.getTransiciones().get(i).getSimbolo().equals(simbolo))
+                {
+                    newestado = at.getTransiciones().get(i).getEstadoB();
+                }
+            }
+
+            return newestado;
+        }
+
+    
+        ///renueva las transiciones con los estados que estan en la lista de estados 
         
-        
-    }
+        public LinkedList<Transicion> renovar_transic_estados(Automata at)
+        {
+            for (int i = 0; i < at.getEstados().size(); i++)
+            {
+                for (int j = 0; j < at.getTransiciones().size(); j++)
+                {
+                    if (at.getEstados().get(i).getNombre().equals(at.getTransiciones().get(j).getEstadoA().getNombre()))
+                    {
+                        at.getTransiciones().get(j).setEstadoA( at.getEstados().get(i));
+                    }
+                    if (at.getEstados().get(i).getNombre().equals(at.getTransiciones().get(j).getEstadoB().getNombre()))
+                    {
+                        at.getTransiciones().get(j).setEstadoB(at.getEstados().get(i));
+                    }
+
+                }
+            }
+
+            return at.getTransiciones();
+        }
+    
+    
+        /// <summary>
+        /// metodo para crear la union entre dos automatas
+        /// se crea una lista de estados nueva de aceptadores
+        /// y el automata para agregarle todo 
+        /// recorro los estados de automta1  y el automata2
+        /// los emparejo y creo los estados nuevos 
+        /// luego agrego los estados aceptadores
+        /// y por ultimo las transiciones
+        /// </summary>
+        /// <param name="at1"></param>
+        /// <param name="at2"></param>
+        /// <param name="mc"></param>
+        public void crear_elementos_at_union(Automata at1, Automata at2)
+        {
+            /////primero verifico que los dos automatas tengan el mismo alfabeto 
+            if (verificar_lenguaje(at1, at2) == true)
+            {
+                LinkedList<Estado> listaestados = new LinkedList<Estado>();
+                LinkedList<Estado> listaStaceptadores = new LinkedList<Estado>();
+                Automata atnew = new Automata();
+
+                ///valores por defecto para el automata nuevo que se crea
+                ///
+
+                atnew.setNombre(at1.getNombre() + "_union_" + at2.getNombre());
+                atnew.setTipoAutomata(at1.getTipoAutomata());
+                atnew.setLenguaje( at1.getLenguaje());
+
+                //para crear estados y colocar aceptadores
+
+
+                for (int i = 0; i < at1.getEstados().size(); i++)
+                {
+                    for (int j = 0; j < at2.getEstados().size(); j++)
+                    {
+                        ////si almenos un estado es aceptador el acepta
+                        if (at1.getEstados().get(i).isEsAceptador() == true || at2.getEstados().get(j).isEsAceptador() == true)
+                        {// si los dos son iniciales es inicial
+                            if (at2.getEstados().get(j).isEsInicial() == true && at1.getEstados().get(i).isEsInicial()== true)
+                            {
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre()+ "," + at2.getEstados().get(j).getNombre(), true, true,0,0);
+                                atnew.setEstadoInicial(newestado);
+                                listaestados.addLast(newestado);
+                            }
+                            //de lo contrario.. osea que ninguno sea inicial pero almenos un aceptador
+                            else
+                            {
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), false, true,0,0);
+                                listaestados.addLast(newestado);
+                            }
+
+                        }
+                        ///que no sea aceptador osea que ningun estado aceptador
+                        if (at2.getEstados().get(j).isEsAceptador() == false && at1.getEstados().get(i).isEsAceptador() == false)
+                        {//que sea inicial osea los dos iniciales
+                            if (at2.getEstados().get(j).isEsInicial() == true && at1.getEstados().get(i).isEsInicial()== true)
+                            {
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), true, false,0,0);
+                                atnew.setEstadoInicial(newestado);
+                                listaestados.addLast(newestado);
+                            }
+                            ///que no sea aceptador ni inicial 
+                            else
+                            {
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), false, false,0,0);
+                                listaestados.addLast(newestado);
+                            }
+
+                        }
+                    }
+
+                }
+
+                atnew.setEstados(listaestados);
+
+
+
+                //crear lista de aceptadores
+                for (int i = 0; i < listaestados.size(); i++)
+                {
+                    if (listaestados.get(i).isEsAceptador() == true)
+                    {
+                        listaStaceptadores.addLast(listaestados.get(i));
+                    }
+
+                }
+
+                atnew.setEstadoAceptador(listaStaceptadores);
+
+
+                //para crear transiciones
+
+                for (int i = 0; i < atnew.getLenguaje().size(); i++)
+                {
+                    for (int j = 0; j < atnew.getEstados().size(); j++)
+                    {
+                        Estado estado1 = new Estado();
+                        Estado estado2 = new Estado();
+                        Estado estado3 = new Estado();
+                        Estado estado4 = new Estado();
+
+
+
+                        
+
+                        String[] estadosvec = atnew.getEstados().get(j).getNombre().split(",");
+
+                        estado1.setNombre(estadosvec[0]);
+                        estado2.setNombre(estadosvec[1]);
+
+                        estado3 = this.verficar_estado_transicion(at1, estado1.getNombre(), atnew.getLenguaje().get(i));
+                        estado4 = this.verficar_estado_transicion(at2, estado2.getNombre(), atnew.getLenguaje().get(i));
+
+
+
+                        Estado estadobnew = new Estado(estado3.getNombre()+ "," + estado4.getNombre(), false, false,0,0);
+
+                        Transicion transicionnew = new Transicion(atnew.getEstados().get(j), atnew.getLenguaje().get(i), estadobnew);
+
+
+
+
+                        atnew.getTransiciones().add(transicionnew);
+
+                    }
+
+                }
+
+                ///para los estadosa
+                ///se recorre para quedar todo bien parejo 
+
+                ////para los estados A de las transiciones
+                for (int i = 0; i < atnew.getEstados().size(); i++)
+                {
+                    for (int j = 0; j < atnew.getTransiciones().size(); j++)
+                    {
+                        if (atnew.getEstados().get(i).getNombre().equals(atnew.getTransiciones().get(j).getEstadoA().getNombre()))
+                        {
+
+                            atnew.getTransiciones().get(j).setEstadoA(atnew.getEstados().get(i));
+                        }
+
+                    }
+                }
+
+                ////para los estados B de las transiciones
+                
+                for (int i = 0; i < atnew.getEstados().size(); i++)
+                {
+                    for (int j = 0; j < atnew.getTransiciones().size(); j++)
+                    {
+                        if (atnew.getEstados().get(i).getNombre().equals(atnew.getTransiciones().get(j).getEstadoB().getNombre()))
+                        {
+
+                            atnew.getTransiciones().get(j).setEstadoB(atnew.getEstados().get(i));
+                        }
+
+                    }
+                }
+                
+                ////verificar que no este ya realizado
+                boolean agregar=true;
+                for (int i = 0; i < automatas.size(); i++)
+                {    
+                    if (automatas.get(i).getNombre().equals(atnew.getNombre()))
+                    {
+                        System.out.println("el complemento ya esta realizado");
+                        i=automatas.size();
+                        agregar=false;
+                    }
+                }
+                if (agregar==true)
+                    {
+                        atnew.setTransiciones(this.renovar_transic_estados(atnew));
+                        automatas.add(atnew);
+                    }
+            }
+            else
+            {
+                System.out.println("lenguajes no concuerdan");
+            }
+        }
+
+
+       
+        /// <summary>
+        /// metodo para crear la union entre dos automatas
+        /// se crea una lista de estados nueva de aceptadores
+        /// y el automata para agregarle todo 
+        /// recorro los estados de automta1  y el automata2
+        /// los emparejo y creo los estados nuevos 
+        /// luego agrego los estados aceptadores
+        /// y por ultimo las transiciones
+        /// </summary>
+        /// <param name="at1"></param>
+        /// <param name="at2"></param>
+        /// <param name="mc"></param>
+        public void crear_elementos_at_interseccion(Automata at1, Automata at2)
+        {
+            /////primero verifico que los dos automatas tengan el mismo alfabeto 
+            if (verificar_lenguaje(at1, at2) == true)
+            {
+                LinkedList<Estado> listaestados = new LinkedList<Estado>();
+                LinkedList<Estado> listaStaceptadores = new LinkedList<Estado>();
+                Automata atnew = new Automata();
+
+                ///valores por defecto para el automata nuevo que se crea
+                ///
+
+                atnew.setNombre(at1.getNombre() + "_union_" + at2.getNombre());
+                atnew.setTipoAutomata(at1.getTipoAutomata());
+                atnew.setLenguaje( at1.getLenguaje());
+
+                //para crear estados y colocar aceptadores
+
+
+                for (int i = 0; i < at1.getEstados().size(); i++)
+                {
+                    for (int j = 0; j < at2.getEstados().size(); j++)
+                    {
+                        ////acepta solo si los dos son aceptadores
+                        if (at1.getEstados().get(i).isEsAceptador() == true && at2.getEstados().get(j).isEsAceptador() == true)
+                        {// si los dos son iniciales es inicial
+                            if (at2.getEstados().get(j).isEsInicial() == true && at1.getEstados().get(i).isEsInicial()== true)
+                            {
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre()+ "," + at2.getEstados().get(j).getNombre(), true, true,0,0);
+                                atnew.setEstadoInicial(newestado);
+                                listaestados.addLast(newestado);
+                            }
+                            //de lo contrario.. osea que ninguno sea inicial pero almenos un aceptador
+                            else
+                            {
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), false, true,0,0);
+                                listaestados.addLast(newestado);
+                            }
+
+                        }
+                        ///que no sea aceptador osea que ningun estado aceptador
+                        if (at2.getEstados().get(j).isEsAceptador() == false || at1.getEstados().get(i).isEsAceptador() == false)
+                        {//que sea inicial osea los dos iniciales
+                            if (at2.getEstados().get(j).isEsInicial() == true && at1.getEstados().get(i).isEsInicial()== true)
+                            {
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), true, false,0,0);
+                                atnew.setEstadoInicial(newestado);
+                                listaestados.addLast(newestado);
+                            }
+                            ///que no sea aceptador ni inicial 
+                            else
+                            {
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), false, false,0,0);
+                                listaestados.addLast(newestado);
+                            }
+
+                        }
+                    }
+
+                }
+
+                atnew.setEstados(listaestados);
+
+
+
+                //crear lista de aceptadores
+                for (int i = 0; i < listaestados.size(); i++)
+                {
+                    if (listaestados.get(i).isEsAceptador() == true)
+                    {
+                        listaStaceptadores.addLast(listaestados.get(i));
+                    }
+
+                }
+
+                atnew.setEstadoAceptador(listaStaceptadores);
+
+
+                //para crear transiciones
+
+                for (int i = 0; i < atnew.getLenguaje().size(); i++)
+                {
+                    for (int j = 0; j < atnew.getEstados().size(); j++)
+                    {
+                        Estado estado1 = new Estado();
+                        Estado estado2 = new Estado();
+                        Estado estado3 = new Estado();
+                        Estado estado4 = new Estado();
+
+
+
+                        
+
+                        String[] estadosvec = atnew.getEstados().get(j).getNombre().split(",");
+
+                        estado1.setNombre(estadosvec[0]);
+                        estado2.setNombre(estadosvec[1]);
+
+                        estado3 = this.verficar_estado_transicion(at1, estado1.getNombre(), atnew.getLenguaje().get(i));
+                        estado4 = this.verficar_estado_transicion(at2, estado2.getNombre(), atnew.getLenguaje().get(i));
+
+
+
+                        Estado estadobnew = new Estado(estado3.getNombre()+ "," + estado4.getNombre(), false, false,0,0);
+
+                        Transicion transicionnew = new Transicion(atnew.getEstados().get(j), atnew.getLenguaje().get(i), estadobnew);
+
+
+
+
+                        atnew.getTransiciones().add(transicionnew);
+
+                    }
+
+                }
+
+                ///para los estadosa
+                ///se recorre para quedar todo bien parejo 
+
+                ////para los estados A de las transiciones
+                for (int i = 0; i < atnew.getEstados().size(); i++)
+                {
+                    for (int j = 0; j < atnew.getTransiciones().size(); j++)
+                    {
+                        if (atnew.getEstados().get(i).getNombre().equals(atnew.getTransiciones().get(j).getEstadoA().getNombre()))
+                        {
+
+                            atnew.getTransiciones().get(j).setEstadoA(atnew.getEstados().get(i));
+                        }
+
+                    }
+                }
+
+                ////para los estados B de las transiciones
+                
+                for (int i = 0; i < atnew.getEstados().size(); i++)
+                {
+                    for (int j = 0; j < atnew.getTransiciones().size(); j++)
+                    {
+                        if (atnew.getEstados().get(i).getNombre().equals(atnew.getTransiciones().get(j).getEstadoB().getNombre()))
+                        {
+
+                            atnew.getTransiciones().get(j).setEstadoB(atnew.getEstados().get(i));
+                        }
+
+                    }
+                }
+                
+                ////verificar que no este ya realizado
+                boolean agregar=true;
+                for (int i = 0; i < automatas.size(); i++)
+                {    
+                    if (automatas.get(i).getNombre().equals(atnew.getNombre()))
+                    {
+                        System.out.println("el complemento ya esta realizado");
+                        i=automatas.size();
+                        agregar=false;
+                    }
+                    
+                }
+                
+                if (agregar==true)
+                    {
+                        atnew.setTransiciones(this.renovar_transic_estados(atnew));
+                        automatas.add(atnew);
+                    }
+            }
+            else
+            {
+                System.out.println("lenguajes no concuerdan");
+            }
+        }
+
 
 ///fin de la clase MetodosDeCreacionLogica
     public void setAutomatas(LinkedList<Automata> automatas) {
