@@ -31,6 +31,7 @@ public class Automata implements java.io.Serializable{
 
     public Automata() 
     {
+        this.transiciones = new LinkedList<>();
     }
 
     public Automata(String nombre, String tipoAutomata, LinkedList<Estado> estados, LinkedList<String> lenguaje, Estado estadoInicial, LinkedList<Estado> estadoAceptador) 

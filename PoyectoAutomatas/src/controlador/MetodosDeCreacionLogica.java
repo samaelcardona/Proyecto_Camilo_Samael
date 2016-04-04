@@ -1815,7 +1815,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                 ///valores por defecto para el automata nuevo que se crea
                 ///
 
-                atnew.setNombre(at1.getNombre() + "_union_" + at2.getNombre());
+                atnew.setNombre(at1.getNombre() + "_interseccion_" + at2.getNombre());
                 atnew.setTipoAutomata(at1.getTipoAutomata());
                 atnew.setLenguaje( at1.getLenguaje());
 
