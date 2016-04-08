@@ -1604,6 +1604,8 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
 
             return at.getTransiciones();
         }
+        
+        
     
     
         /// <summary>
@@ -1644,16 +1646,16 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                         ////si almenos un estado es aceptador el acepta
                         if (at1.getEstados().get(i).isEsAceptador() == true || at2.getEstados().get(j).isEsAceptador() == true)
                         {// si los dos son iniciales es inicial
-                            if (at2.getEstados().get(j).isEsInicial() == true && at1.getEstados().get(i).isEsInicial()== true)
+                            if (at2.getEstados().get(j).isEsInicial() == true && at1.getEstados().get(i).isEsInicial() == true)
                             {
-                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre()+ "," + at2.getEstados().get(j).getNombre(), true, true,0,0);
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre()+ "-" + at2.getEstados().get(j).getNombre(), true, true,0,0);
                                 atnew.setEstadoInicial(newestado);
                                 listaestados.addLast(newestado);
                             }
                             //de lo contrario.. osea que ninguno sea inicial pero almenos un aceptador
                             else
                             {
-                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), false, true,0,0);
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "-" + at2.getEstados().get(j).getNombre(), false, true,0,0);
                                 listaestados.addLast(newestado);
                             }
 
@@ -1663,14 +1665,14 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                         {//que sea inicial osea los dos iniciales
                             if (at2.getEstados().get(j).isEsInicial() == true && at1.getEstados().get(i).isEsInicial()== true)
                             {
-                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), true, false,0,0);
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "-" + at2.getEstados().get(j).getNombre(), true, false,0,0);
                                 atnew.setEstadoInicial(newestado);
                                 listaestados.addLast(newestado);
                             }
                             ///que no sea aceptador ni inicial 
                             else
                             {
-                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), false, false,0,0);
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "-" + at2.getEstados().get(j).getNombre(), false, false,0,0);
                                 listaestados.addLast(newestado);
                             }
 
@@ -1711,7 +1713,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
 
                         
 
-                        String[] estadosvec = atnew.getEstados().get(j).getNombre().split(",");
+                        String[] estadosvec = atnew.getEstados().get(j).getNombre().split("-");
 
                         estado1.setNombre(estadosvec[0]);
                         estado2.setNombre(estadosvec[1]);
@@ -1721,7 +1723,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
 
 
 
-                        Estado estadobnew = new Estado(estado3.getNombre()+ "," + estado4.getNombre(), false, false,0,0);
+                        Estado estadobnew = new Estado(estado3.getNombre()+ "-" + estado4.getNombre(), false, false,0,0);
 
                         Transicion transicionnew = new Transicion(atnew.getEstados().get(j), atnew.getLenguaje().get(i), estadobnew);
 
@@ -1777,9 +1779,123 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                         agregar=false;
                     }
                 }
+                
+                 LinkedList<String> listaextraestados=new LinkedList<>();
                 if (agregar==true)
                     {
                         atnew.setTransiciones(this.renovar_transic_estados(atnew));
+                        
+                        LinkedList<Transicion> listatraneliminar=new LinkedList<>();
+                        LinkedList<String>  listaNombreEstadoscopia=new  LinkedList<>();
+                        LinkedList<String>  listaNombreEstados=new  LinkedList<>();
+                       
+                        
+                         for (int i = 0; i < atnew.getTransiciones().size(); i++) 
+                        {
+
+                            String  split[]=atnew.getTransiciones().get(i).getEstadoB().getNombre().split("-");
+
+                            if (split[0].equals("null")&&split[1].equals("null")) 
+                            {
+                              listatraneliminar.add(atnew.getTransiciones().get(i));
+                              
+                            }
+                            
+                            if (split[0].equals("null")&&!split[1].equals("null")) 
+                            {
+                               if (!listaextraestados.contains(split[1])) 
+                                {
+                                  listaextraestados.add(split[1]);  
+                                }
+                              atnew.getTransiciones().get(i).getEstadoB().setNombre(split[1]);
+                            }
+                            
+                            if (!split[0].equals("null")&&split[1].equals("null")) 
+                            {
+                                if (!listaextraestados.contains(split[0])) 
+                                {
+                                  listaextraestados.add(split[0]);  
+                                }
+                               
+                              atnew.getTransiciones().get(i).getEstadoB().setNombre(split[0]);
+                            }
+                        }
+                         
+                      
+                         for (int i = 0; i < listatraneliminar.size(); i++) 
+                         { 
+                             listaNombreEstadoscopia.add(listatraneliminar.get(i).getEstadoA().getNombre());
+                         }
+                         
+                         while (listatraneliminar.size()!=0) 
+                         {     
+                             atnew.getTransiciones().remove(listatraneliminar.getFirst());
+                             listatraneliminar.removeFirst();
+                         }
+                         
+                         for (int i = 0; i <listaNombreEstadoscopia.size(); i++) 
+                         { 
+                           boolean eliminar=true;  
+                             for (int j = 0; j < atnew.getTransiciones().size(); j++) 
+                             {
+                                 if (atnew.getTransiciones().get(j).getEstadoA().getNombre().equals(listaNombreEstadoscopia.get(i))) 
+                                 {
+                                   eliminar=false;  
+                                 }
+                             }
+                             if (eliminar==true) 
+                             {
+                               listaNombreEstados.add(listaNombreEstadoscopia.get(i));  
+                             }
+                             
+                         }
+
+                       
+                         
+                         for (int i = 0; i < listaextraestados.size(); i++) 
+                         {
+                             
+                             Estado nuevo=new Estado(listaextraestados.get(i), false, false,0, 0);
+                                
+                                for (int j = 0; j < at1.getEstados().size(); j++) 
+                                {
+                                    if (at1.getEstados().get(j).getNombre().equals(listaextraestados.get(i))) 
+                                    {
+                                        nuevo.setEsAceptador(at1.getEstados().get(j).isEsAceptador());
+                                    }  
+                                }  
+                                for (int j = 0; j < at2.getEstados().size(); j++) 
+                                {
+                                    if (at2.getEstados().get(j).getNombre().equals(listaextraestados.get(i))) 
+                                    {
+                                        nuevo.setEsAceptador(at2.getEstados().get(j).isEsAceptador());
+                                    }
+                                }
+                               atnew.getEstados().add(nuevo);
+                         }
+                         
+                        
+                         ////eliminar estados inecesarios
+                          LinkedList<Estado> eliminarEstados=new LinkedList<>();
+                         for (int i = 0; i < listaNombreEstados.size(); i++) 
+                         {
+                            for (int j = 0; j < atnew.getEstados().size(); j++) 
+                            {
+                                if (atnew.getEstados().get(j).getNombre().equals(listaNombreEstados.get(i))) 
+                                {
+                                    eliminarEstados.add(atnew.getEstados().get(j));
+                                }
+                            }
+                         }
+                         
+                                               
+                         
+                         while (eliminarEstados.size()!=0) 
+                         {  
+                            atnew.getEstados().remove(eliminarEstados.getFirst());
+                            eliminarEstados.removeFirst();
+                         }
+                         
                         automatas.add(atnew);
                     }
             }
@@ -1826,19 +1942,19 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                 {
                     for (int j = 0; j < at2.getEstados().size(); j++)
                     {
-                        ////acepta solo si los dos son aceptadores
+                        ////si almenos un estado es aceptador el acepta
                         if (at1.getEstados().get(i).isEsAceptador() == true && at2.getEstados().get(j).isEsAceptador() == true)
                         {// si los dos son iniciales es inicial
-                            if (at2.getEstados().get(j).isEsInicial() == true && at1.getEstados().get(i).isEsInicial()== true)
+                            if (at2.getEstados().get(j).isEsInicial() == true && at1.getEstados().get(i).isEsInicial() == true)
                             {
-                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre()+ "," + at2.getEstados().get(j).getNombre(), true, true,0,0);
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre()+ "-" + at2.getEstados().get(j).getNombre(), true, true,0,0);
                                 atnew.setEstadoInicial(newestado);
                                 listaestados.addLast(newestado);
                             }
                             //de lo contrario.. osea que ninguno sea inicial pero almenos un aceptador
                             else
                             {
-                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), false, true,0,0);
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "-" + at2.getEstados().get(j).getNombre(), false, true,0,0);
                                 listaestados.addLast(newestado);
                             }
 
@@ -1848,14 +1964,14 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                         {//que sea inicial osea los dos iniciales
                             if (at2.getEstados().get(j).isEsInicial() == true && at1.getEstados().get(i).isEsInicial()== true)
                             {
-                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), true, false,0,0);
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "-" + at2.getEstados().get(j).getNombre(), true, false,0,0);
                                 atnew.setEstadoInicial(newestado);
                                 listaestados.addLast(newestado);
                             }
                             ///que no sea aceptador ni inicial 
                             else
                             {
-                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "," + at2.getEstados().get(j).getNombre(), false, false,0,0);
+                                Estado newestado = new Estado(at1.getEstados().get(i).getNombre() + "-" + at2.getEstados().get(j).getNombre(), false, false,0,0);
                                 listaestados.addLast(newestado);
                             }
 
@@ -1896,7 +2012,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
 
                         
 
-                        String[] estadosvec = atnew.getEstados().get(j).getNombre().split(",");
+                        String[] estadosvec = atnew.getEstados().get(j).getNombre().split("-");
 
                         estado1.setNombre(estadosvec[0]);
                         estado2.setNombre(estadosvec[1]);
@@ -1906,7 +2022,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
 
 
 
-                        Estado estadobnew = new Estado(estado3.getNombre()+ "," + estado4.getNombre(), false, false,0,0);
+                        Estado estadobnew = new Estado(estado3.getNombre()+ "-" + estado4.getNombre(), false, false,0,0);
 
                         Transicion transicionnew = new Transicion(atnew.getEstados().get(j), atnew.getLenguaje().get(i), estadobnew);
 
@@ -1961,12 +2077,124 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                         i=automatas.size();
                         agregar=false;
                     }
-                    
                 }
                 
+                 LinkedList<String> listaextraestados=new LinkedList<>();
                 if (agregar==true)
                     {
                         atnew.setTransiciones(this.renovar_transic_estados(atnew));
+                        
+                        LinkedList<Transicion> listatraneliminar=new LinkedList<>();
+                        LinkedList<String>  listaNombreEstadoscopia=new  LinkedList<>();
+                        LinkedList<String>  listaNombreEstados=new  LinkedList<>();
+                       
+                        
+                         for (int i = 0; i < atnew.getTransiciones().size(); i++) 
+                        {
+
+                            String  split[]=atnew.getTransiciones().get(i).getEstadoB().getNombre().split("-");
+
+                            if (split[0].equals("null")&&split[1].equals("null")) 
+                            {
+                              listatraneliminar.add(atnew.getTransiciones().get(i));
+                              
+                            }
+                            
+                            if (split[0].equals("null")&&!split[1].equals("null")) 
+                            {
+                               if (!listaextraestados.contains(split[1])) 
+                                {
+                                  listaextraestados.add(split[1]);  
+                                }
+                              atnew.getTransiciones().get(i).getEstadoB().setNombre(split[1]);
+                            }
+                            
+                            if (!split[0].equals("null")&&split[1].equals("null")) 
+                            {
+                                if (!listaextraestados.contains(split[0])) 
+                                {
+                                  listaextraestados.add(split[0]);  
+                                }
+                               
+                              atnew.getTransiciones().get(i).getEstadoB().setNombre(split[0]);
+                            }
+                        }
+                         
+                      
+                         for (int i = 0; i < listatraneliminar.size(); i++) 
+                         { 
+                             listaNombreEstadoscopia.add(listatraneliminar.get(i).getEstadoA().getNombre());
+                         }
+                         
+                         while (listatraneliminar.size()!=0) 
+                         {     
+                             atnew.getTransiciones().remove(listatraneliminar.getFirst());
+                             listatraneliminar.removeFirst();
+                         }
+                         
+                         for (int i = 0; i <listaNombreEstadoscopia.size(); i++) 
+                         { 
+                           boolean eliminar=true;  
+                             for (int j = 0; j < atnew.getTransiciones().size(); j++) 
+                             {
+                                 if (atnew.getTransiciones().get(j).getEstadoA().getNombre().equals(listaNombreEstadoscopia.get(i))) 
+                                 {
+                                   eliminar=false;  
+                                 }
+                             }
+                             if (eliminar==true) 
+                             {
+                               listaNombreEstados.add(listaNombreEstadoscopia.get(i));  
+                             }
+                             
+                         }
+
+                       
+                         
+                         for (int i = 0; i < listaextraestados.size(); i++) 
+                         {
+                             
+                             Estado nuevo=new Estado(listaextraestados.get(i), false, false,0, 0);
+                                
+                                for (int j = 0; j < at1.getEstados().size(); j++) 
+                                {
+                                    if (at1.getEstados().get(j).getNombre().equals(listaextraestados.get(i))) 
+                                    {
+                                        nuevo.setEsAceptador(at1.getEstados().get(j).isEsAceptador());
+                                    }  
+                                }  
+                                for (int j = 0; j < at2.getEstados().size(); j++) 
+                                {
+                                    if (at2.getEstados().get(j).getNombre().equals(listaextraestados.get(i))) 
+                                    {
+                                        nuevo.setEsAceptador(at2.getEstados().get(j).isEsAceptador());
+                                    }
+                                }
+                               atnew.getEstados().add(nuevo);
+                         }
+                         
+                        
+                         ////eliminar estados inecesarios
+                          LinkedList<Estado> eliminarEstados=new LinkedList<>();
+                         for (int i = 0; i < listaNombreEstados.size(); i++) 
+                         {
+                            for (int j = 0; j < atnew.getEstados().size(); j++) 
+                            {
+                                if (atnew.getEstados().get(j).getNombre().equals(listaNombreEstados.get(i))) 
+                                {
+                                    eliminarEstados.add(atnew.getEstados().get(j));
+                                }
+                            }
+                         }
+                         
+                                               
+                         
+                         while (eliminarEstados.size()!=0) 
+                         {  
+                            atnew.getEstados().remove(eliminarEstados.getFirst());
+                            eliminarEstados.removeFirst();
+                         }
+                         
                         automatas.add(atnew);
                     }
             }

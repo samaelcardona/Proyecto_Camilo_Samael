@@ -841,14 +841,16 @@ public class Frame extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         mcl.metodoUnion(jComboBox2.getSelectedItem() + "", jComboBox12.getSelectedItem() + "");
-        metodoComboBox();
+        
         
         Automata at1=new Automata();
         Automata at2=new Automata();
         
+        System.out.println("at"+jComboBox2.getSelectedItem()+"at2"+jComboBox12.getSelectedItem()+"");
+        
         for (int i = 0; i < mcl.getAutomatas().size(); i++) 
         {
-            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox2.getSelectedItem())) 
+            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox2.getSelectedItem()+"")) 
             {
                at1.setNombre(mcl.getAutomatas().get(i).getNombre());
                at1.setTipoAutomata(mcl.getAutomatas().get(i).getTipoAutomata());
@@ -858,7 +860,7 @@ public class Frame extends javax.swing.JFrame {
                at1.setEstadoAceptador(mcl.getAutomatas().get(i).getEstadoAceptador());
                at1.setTransiciones(mcl.getAutomatas().get(i).getTransiciones());
             } 
-            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox12.getSelectedItem())) 
+            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox12.getSelectedItem()+"")) 
             {
                at2.setNombre(mcl.getAutomatas().get(i).getNombre());
                at2.setTipoAutomata(mcl.getAutomatas().get(i).getTipoAutomata());
@@ -869,6 +871,8 @@ public class Frame extends javax.swing.JFrame {
                at2.setTransiciones(mcl.getAutomatas().get(i).getTransiciones());
             }
         }
+        
+        System.out.println("at"+at1.getNombre()+"at2"+at2.getNombre());
         
          mcl.crear_elementos_at_union(at1, at2);
         metodoComboBox();
@@ -944,7 +948,7 @@ public class Frame extends javax.swing.JFrame {
                 ///falta transiciones. agregar textareas para ello.
                 jTextArea1.setText("Origen " + "Simbolo " + " Destino" + "\n");
                 for (int j = 0; j < mcl.getAutomatas().get(i).getTransiciones().size(); j++) {
-
+                    
                     jTextArea1.setText(jTextArea1.getText() + mcl.getAutomatas().get(i).getTransiciones().get(j).getEstadoA().getNombre() + "______" + mcl.getAutomatas().get(i).getTransiciones().get(j).getSimbolo() + "______" + mcl.getAutomatas().get(i).getTransiciones().get(j).getEstadoB().getNombre() + "\n");
 
                 }
