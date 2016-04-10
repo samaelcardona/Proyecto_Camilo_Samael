@@ -1874,28 +1874,7 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                                atnew.getEstados().add(nuevo);
                          }
                          
-                        
-                         ////eliminar estados inecesarios
-                          LinkedList<Estado> eliminarEstados=new LinkedList<>();
-                         for (int i = 0; i < listaNombreEstados.size(); i++) 
-                         {
-                            for (int j = 0; j < atnew.getEstados().size(); j++) 
-                            {
-                                if (atnew.getEstados().get(j).getNombre().equals(listaNombreEstados.get(i))) 
-                                {
-                                    eliminarEstados.add(atnew.getEstados().get(j));
-                                }
-                            }
-                         }
-                         
-                                               
-                         
-                         while (eliminarEstados.size()!=0) 
-                         {  
-                            atnew.getEstados().remove(eliminarEstados.getFirst());
-                            eliminarEstados.removeFirst();
-                         }
-                         
+                                          
                         automatas.add(atnew);
                     }
             }
@@ -2173,27 +2152,6 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                                atnew.getEstados().add(nuevo);
                          }
                          
-                        
-                         ////eliminar estados inecesarios
-                          LinkedList<Estado> eliminarEstados=new LinkedList<>();
-                         for (int i = 0; i < listaNombreEstados.size(); i++) 
-                         {
-                            for (int j = 0; j < atnew.getEstados().size(); j++) 
-                            {
-                                if (atnew.getEstados().get(j).getNombre().equals(listaNombreEstados.get(i))) 
-                                {
-                                    eliminarEstados.add(atnew.getEstados().get(j));
-                                }
-                            }
-                         }
-                         
-                                               
-                         
-                         while (eliminarEstados.size()!=0) 
-                         {  
-                            atnew.getEstados().remove(eliminarEstados.getFirst());
-                            eliminarEstados.removeFirst();
-                         }
                          
                         automatas.add(atnew);
                     }
