@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
+import javax.swing.table.DefaultTableModel;
 import modelo.Automata;
 import modelo.Estado;
 
@@ -34,7 +35,7 @@ public class Frame extends javax.swing.JFrame {
      */
     MetodosDeCreacionLogica mcl;
     MetodosMemoria mm;
-    
+
     int cantidadClicks;
     int mousey1;
     int mousex1;
@@ -43,14 +44,14 @@ public class Frame extends javax.swing.JFrame {
     JSlider slider;
 
     String tipoAutomata;
-    
+
     public Frame() {
         initComponents();
         mcl = new MetodosDeCreacionLogica();
         mm = new MetodosMemoria(mcl);
         tipoAutomata = "";
-        cantidadClicks=0;
-        slider=new JSlider(JSlider.HORIZONTAL,10,200,25);
+        cantidadClicks = 0;
+        slider = new JSlider(JSlider.HORIZONTAL, 10, 200, 25);
         panel2.add(slider);
 
     }
@@ -139,6 +140,9 @@ public class Frame extends javax.swing.JFrame {
         jComboBox6 = new javax.swing.JComboBox<String>();
         jButton14 = new javax.swing.JButton();
         panel2 = new vista.Panel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -447,6 +451,11 @@ public class Frame extends javax.swing.JFrame {
         });
 
         jButton8.setText("AFND->AFD");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jComboBox7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -528,6 +537,26 @@ public class Frame extends javax.swing.JFrame {
             .addGap(0, 278, Short.MAX_VALUE)
         );
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable1);
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
@@ -536,170 +565,183 @@ public class Frame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel1Layout.createSequentialGroup()
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panel1Layout.createSequentialGroup()
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addComponent(jblCrearTransiciones)
+                                        .addGap(67, 67, 67))
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addComponent(jblAfd)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbAfd)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jblAfn)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbAfnd)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jblAfnd_e)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbAfne)
+                                        .addGap(41, 41, 41)))
+                                .addComponent(jblQ)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtEstados, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addGap(80, 80, 80)
+                                        .addComponent(jLabel1))
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jblLenguaje, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtLenguaje, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jblQ0)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtEstadoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jblEstadosAceptadores, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtEstadosAceptadores, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(10, 10, 10)
+                                .addComponent(jblNombreAutomata)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addComponent(jButton11)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jComboBox10, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addComponent(txtNombreAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnCrearAutomata))))
+                            .addGroup(panel1Layout.createSequentialGroup()
+                                .addComponent(jButton12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton13)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(jblCrearTransiciones)
-                                .addGap(67, 67, 67))
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(jblAfd)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbAfd)
-                                .addGap(18, 18, 18)
-                                .addComponent(jblAfn)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbAfnd)
-                                .addGap(18, 18, 18)
-                                .addComponent(jblAfnd_e)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbAfne)
-                                .addGap(41, 41, 41)))
-                        .addComponent(jblQ)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtEstados, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addGap(80, 80, 80)
-                                .addComponent(jLabel1))
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jblLenguaje, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtLenguaje, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jblQ0)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtEstadoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jblEstadosAceptadores, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtEstadosAceptadores, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(10, 10, 10)
-                        .addComponent(jblNombreAutomata)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(jButton11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox10, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(txtNombreAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCrearAutomata))))
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addComponent(jButton12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton13))
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(jblTransicionInicial)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTransicionInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel1Layout.createSequentialGroup()
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addComponent(jblTransicionInicial)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtTransicionInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel1Layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jblQuintupla)
+                                                    .addGroup(panel1Layout.createSequentialGroup()
+                                                        .addGap(87, 87, 87)
+                                                        .addComponent(btnMostrarQuintupla))))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel1Layout.createSequentialGroup()
+                                                .addGap(7, 7, 7)
+                                                .addComponent(jblSimbolo)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtSimbolosTransicion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jblTransicionFinal)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtTransicionFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(10, 10, 10)
+                                                .addComponent(cbSeleccionarAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jblSeleccionarAutomata)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnCrearTransicion))))
+                                    .addComponent(cbQuintupla, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addComponent(jblEstadosQuintupla)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtEstadosQuintupla, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jblLenguajeQuintupla)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtLenguajeQuintupla, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jblEstadoInicialQuintupla)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtEstadoInicialQuintupla, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(36, 36, 36)
+                                        .addComponent(jblEstadoAceptadorQuintupla, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jblQuintupla)
                                             .addGroup(panel1Layout.createSequentialGroup()
-                                                .addGap(87, 87, 87)
-                                                .addComponent(btnMostrarQuintupla))))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel1Layout.createSequentialGroup()
-                                        .addGap(7, 7, 7)
-                                        .addComponent(jblSimbolo)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtSimbolosTransicion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jblTransicionFinal)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtTransicionFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(10, 10, 10)
-                                        .addComponent(cbSeleccionarAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jblSeleccionarAutomata)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnCrearTransicion))))
-                            .addComponent(cbQuintupla, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(jblEstadosQuintupla)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtEstadosQuintupla, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jblLenguajeQuintupla)
+                                                .addGap(18, 18, 18)
+                                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(panel1Layout.createSequentialGroup()
+                                                        .addGap(29, 29, 29)
+                                                        .addComponent(jLabel2))
+                                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGroup(panel1Layout.createSequentialGroup()
+                                                .addGap(10, 10, 10)
+                                                .addComponent(jToggleButton1)))))
                                 .addGap(18, 18, 18)
-                                .addComponent(txtLenguajeQuintupla, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jblEstadoInicialQuintupla)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtEstadoInicialQuintupla, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(36, 36, 36)
-                                .addComponent(jblEstadoAceptadorQuintupla, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cbComplementoAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(panel1Layout.createSequentialGroup()
+                                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jButton7)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButton2))
+                                            .addGroup(panel1Layout.createSequentialGroup()
+                                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(21, 21, 21)
+                                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jButton9)
+                                                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                        .addComponent(jComboBox12, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jButton5, javax.swing.GroupLayout.Alignment.LEADING))))
+                                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(panel1Layout.createSequentialGroup()
+                                                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                        .addComponent(jComboBox6, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(cbReversaAutomata, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGap(28, 28, 28)
+                                                    .addComponent(jButton14))
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                                                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButton3)
+                                                        .addComponent(btnReversa)
+                                                        .addComponent(jButton10))
+                                                    .addGap(1, 1, 1)))
+                                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(panel1Layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
-                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(panel1Layout.createSequentialGroup()
-                                                .addGap(29, 29, 29)
-                                                .addComponent(jLabel2))
-                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(panel1Layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(jToggleButton1)))))
-                        .addGap(18, 18, 18)
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cbComplementoAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(panel1Layout.createSequentialGroup()
-                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButton7)
+                                        .addComponent(btnMostrarTabla)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton2))
+                                        .addComponent(btnSeleccionarAutomataTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(panel1Layout.createSequentialGroup()
-                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(21, 21, 21)
-                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButton9)
-                                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(jComboBox12, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jButton5, javax.swing.GroupLayout.Alignment.LEADING))))
-                                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(panel1Layout.createSequentialGroup()
-                                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(jComboBox6, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(cbReversaAutomata, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(28, 28, 28)
-                                            .addComponent(jButton14))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-                                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jButton3)
-                                                .addComponent(btnReversa)
-                                                .addComponent(jButton10))
-                                            .addGap(1, 1, 1)))
-                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                                .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnMostrarTabla)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSeleccionarAutomataTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(92, 92, 92))
+                                        .addGap(86, 86, 86)
+                                        .addComponent(jButton1)))))
+                        .addGap(281, 281, 281))))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -737,16 +779,6 @@ public class Frame extends javax.swing.JFrame {
                 .addGap(9, 9, 9)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel1Layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton4)
-                                .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnMostrarTabla)
-                                .addComponent(btnSeleccionarAutomataTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(panel1Layout.createSequentialGroup()
                         .addGap(80, 80, 80)
                         .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -777,7 +809,8 @@ public class Frame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton8))
+                            .addComponent(jButton8)
+                            .addComponent(jButton1))
                         .addGap(18, 18, 18)
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -827,7 +860,19 @@ public class Frame extends javax.swing.JFrame {
                                 .addComponent(jToggleButton1))
                             .addGroup(panel1Layout.createSequentialGroup()
                                 .addGap(41, 41, 41)
-                                .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton4)
+                                .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnMostrarTabla)
+                                .addComponent(btnSeleccionarAutomataTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -837,7 +882,7 @@ public class Frame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1369, Short.MAX_VALUE)
+                .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1532, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -857,15 +902,15 @@ public class Frame extends javax.swing.JFrame {
 
     private void panel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseClicked
         //        if (evt.getX() >= 5 && evt.getX() < 545 && evt.getY() >= 310 && evt.getY() <= 660) {
-            //            jComboBox11.getSelectedItem();
-            //            for (int i = 0; i < mcl.getAutomatas().size(); i++) {
-                //                for (int j = 0; j < mcl.getAutomatas().get(i).getEstados().size(); j++) {
-                    //                    //if(evt.getX()>mcl.getAutomatas().get(i).getEstados().get(j).getX() && evt.getX()<mcl.getAutomatas().get(i).getEstados().get(j).getX()+)
-                    //                }
-                //            }
-            //        } else {
-            //            System.out.println("Afuera");
-            //        }
+        //            jComboBox11.getSelectedItem();
+        //            for (int i = 0; i < mcl.getAutomatas().size(); i++) {
+        //                for (int j = 0; j < mcl.getAutomatas().get(i).getEstados().size(); j++) {
+        //                    //if(evt.getX()>mcl.getAutomatas().get(i).getEstados().get(j).getX() && evt.getX()<mcl.getAutomatas().get(i).getEstados().get(j).getX()+)
+        //                }
+        //            }
+        //        } else {
+        //            System.out.println("Afuera");
+        //        }
 
     }//GEN-LAST:event_panel1MouseClicked
 
@@ -968,13 +1013,11 @@ public class Frame extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
 
-        Automata at1=new Automata();
-        Automata at2=new Automata();
+        Automata at1 = new Automata();
+        Automata at2 = new Automata();
 
-        for (int i = 0; i < mcl.getAutomatas().size(); i++)
-        {
-            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox2.getSelectedItem()))
-            {
+        for (int i = 0; i < mcl.getAutomatas().size(); i++) {
+            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox2.getSelectedItem())) {
                 at1.setNombre(mcl.getAutomatas().get(i).getNombre());
                 at1.setTipoAutomata(mcl.getAutomatas().get(i).getTipoAutomata());
                 at1.setEstados(mcl.getAutomatas().get(i).getEstados());
@@ -983,8 +1026,7 @@ public class Frame extends javax.swing.JFrame {
                 at1.setEstadoAceptador(mcl.getAutomatas().get(i).getEstadoAceptador());
                 at1.setTransiciones(mcl.getAutomatas().get(i).getTransiciones());
             }
-            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox12.getSelectedItem()))
-            {
+            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox12.getSelectedItem())) {
                 at2.setNombre(mcl.getAutomatas().get(i).getNombre());
                 at2.setTipoAutomata(mcl.getAutomatas().get(i).getTipoAutomata());
                 at2.setEstados(mcl.getAutomatas().get(i).getEstados());
@@ -1002,15 +1044,13 @@ public class Frame extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         mcl.metodoUnion(jComboBox2.getSelectedItem() + "", jComboBox12.getSelectedItem() + "");
 
-        Automata at1=new Automata();
-        Automata at2=new Automata();
+        Automata at1 = new Automata();
+        Automata at2 = new Automata();
 
-        System.out.println("at"+jComboBox2.getSelectedItem()+"at2"+jComboBox12.getSelectedItem()+"");
+        System.out.println("at" + jComboBox2.getSelectedItem() + "at2" + jComboBox12.getSelectedItem() + "");
 
-        for (int i = 0; i < mcl.getAutomatas().size(); i++)
-        {
-            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox2.getSelectedItem()+""))
-            {
+        for (int i = 0; i < mcl.getAutomatas().size(); i++) {
+            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox2.getSelectedItem() + "")) {
                 at1.setNombre(mcl.getAutomatas().get(i).getNombre());
                 at1.setTipoAutomata(mcl.getAutomatas().get(i).getTipoAutomata());
                 at1.setEstados(mcl.getAutomatas().get(i).getEstados());
@@ -1019,8 +1059,7 @@ public class Frame extends javax.swing.JFrame {
                 at1.setEstadoAceptador(mcl.getAutomatas().get(i).getEstadoAceptador());
                 at1.setTransiciones(mcl.getAutomatas().get(i).getTransiciones());
             }
-            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox12.getSelectedItem()+""))
-            {
+            if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox12.getSelectedItem() + "")) {
                 at2.setNombre(mcl.getAutomatas().get(i).getNombre());
                 at2.setTipoAutomata(mcl.getAutomatas().get(i).getTipoAutomata());
                 at2.setEstados(mcl.getAutomatas().get(i).getEstados());
@@ -1031,7 +1070,7 @@ public class Frame extends javax.swing.JFrame {
             }
         }
 
-        System.out.println("at"+at1.getNombre()+"at2"+at2.getNombre());
+        System.out.println("at" + at1.getNombre() + "at2" + at2.getNombre());
 
         mcl.crear_elementos_at_union(at1, at2);
         metodoComboBox();
@@ -1077,7 +1116,60 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSeleccionarAutomataTablaActionPerformed
 
     private void btnMostrarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarTablaActionPerformed
-        System.out.println("Hola papi riqui");
+
+        if (btnSeleccionarAutomataTabla.getSelectedItem() != null) {
+
+            Automata automata = mcl.devolverAutomata(btnSeleccionarAutomataTabla.getSelectedItem() + "");
+
+            String[] cabeceraTabla = new String[2 + automata.getLenguaje().size()];
+            cabeceraTabla[0] = "Tipo";
+            cabeceraTabla[1] = "Estado";
+            DefaultTableModel modelo;
+            String datosTabla[][] = {};
+
+            for (int i = 0; i < automata.getLenguaje().size(); i++) {
+
+                cabeceraTabla[i + 2] = automata.getLenguaje().get(i);
+            }
+            modelo = new DefaultTableModel(datosTabla, cabeceraTabla);
+
+            for (int i = 0; i < automata.getEstados().size(); i++) {
+                String estado = automata.getEstados().get(i).getNombre();
+                String[] fila = new String[2 + automata.getLenguaje().size()];
+                if (estado.equals(automata.getEstadoInicial().getNombre())) {
+                    fila[0] = "->";
+                    fila[1] = estado;
+                    if (mcl.esAcptador(automata, estado)) {
+                        fila[0] = fila[0] + "*";
+                    }
+                } else if (mcl.esAcptador(automata, estado)) {
+                    fila[0] = "*";
+                    fila[1] = estado;
+                } else {
+                    fila[1] = estado;
+                }
+
+                for (int j = 0; j < automata.getTransiciones().size(); j++) {
+                    if (estado.equals(automata.getTransiciones().get(j).getEstadoA().getNombre())) {
+                        if (fila[2 + automata.getLenguaje().indexOf(automata.getTransiciones().get(j).getSimbolo())] == null) {
+                            fila[2 + automata.getLenguaje().indexOf(automata.getTransiciones().get(j).getSimbolo())] = automata.getTransiciones().get(j).getEstadoB().getNombre() + ",";
+                        } else {
+                            fila[2 + automata.getLenguaje().indexOf(automata.getTransiciones().get(j).getSimbolo())] = fila[2 + automata.getLenguaje().indexOf(automata.getTransiciones().get(j).getSimbolo())] + automata.getTransiciones().get(j).getEstadoB().getNombre() + ",";
+                        }
+                    }
+                }
+                modelo.addRow(fila);
+            }
+            String[] fila = new String[2 + automata.getLenguaje().size()];
+            modelo.addRow(fila);
+
+            jTable1.setModel(modelo);
+
+        } else {
+            System.out.println("Debe ingresar primero un automate.");
+        }
+
+
     }//GEN-LAST:event_btnMostrarTablaActionPerformed
 
     private void txtLenguajeQuintuplaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLenguajeQuintuplaActionPerformed
@@ -1244,140 +1336,119 @@ public class Frame extends javax.swing.JFrame {
         //this.puntoMouse(jLabel1);
     }//GEN-LAST:event_jLabel1MouseDragged
 
-    
-    
+
     private void panel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseClicked
-          ///metodo para crear la interfaz por medio grafico
-        
-        if (cantidadClicks>0) 
-        {
-             mousey2=evt.getY();
-             mousex2=evt.getX();
-             
-              int a=0;
-                 for (int i = 0; i < mcl.getAutomatas().size(); i++) 
-                 {
-                     if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox11.getSelectedItem()+ "")) 
-                     {
-                         a=i;
-                     }
-                    
+        ///metodo para crear la interfaz por medio grafico
+
+        if (cantidadClicks > 0) {
+            mousey2 = evt.getY();
+            mousex2 = evt.getX();
+
+            int a = 0;
+            for (int i = 0; i < mcl.getAutomatas().size(); i++) {
+                if (mcl.getAutomatas().get(i).getNombre().equals(jComboBox11.getSelectedItem() + "")) {
+                    a = i;
                 }
-                 
-                 if (mcl.getAutomatas().get(a).getTipoAutomata().equals("AFD")) 
-                 {
-                     mcl.agregarTransicionAFD(mcl.getAutomatas().get(a).getNombre(), rentornarEstadoXY(mcl.getAutomatas().get(a), mousex1, mousey1), JOptionPane.showInputDialog("Agregar estado\n"+"Ingrese simbolo"), rentornarEstadoXY(mcl.getAutomatas().get(a), mousex2, mousey2));
-                 }
-                 if (mcl.getAutomatas().get(a).getTipoAutomata().equals("AFND")||mcl.getAutomatas().get(a).getTipoAutomata().equals("AFND_E")) 
-                 {
-                     mcl.agregarTransicionAFN_O_AFNE(mcl.getAutomatas().get(a).getNombre(), rentornarEstadoXY(mcl.getAutomatas().get(a), mousex1, mousey1), JOptionPane.showInputDialog("Agregar estado\n"+"Ingrese simbolo"), rentornarEstadoXY(mcl.getAutomatas().get(a), mousex2, mousey2));
-                 } 
-                 
-                 cantidadClicks=0;
+
+            }
+
+            if (mcl.getAutomatas().get(a).getTipoAutomata().equals("AFD")) {
+                mcl.agregarTransicionAFD(mcl.getAutomatas().get(a).getNombre(), rentornarEstadoXY(mcl.getAutomatas().get(a), mousex1, mousey1), JOptionPane.showInputDialog("Agregar estado\n" + "Ingrese simbolo"), rentornarEstadoXY(mcl.getAutomatas().get(a), mousex2, mousey2));
+            }
+            if (mcl.getAutomatas().get(a).getTipoAutomata().equals("AFND") || mcl.getAutomatas().get(a).getTipoAutomata().equals("AFND_E")) {
+                mcl.agregarTransicionAFN_O_AFNE(mcl.getAutomatas().get(a).getNombre(), rentornarEstadoXY(mcl.getAutomatas().get(a), mousex1, mousey1), JOptionPane.showInputDialog("Agregar estado\n" + "Ingrese simbolo"), rentornarEstadoXY(mcl.getAutomatas().get(a), mousex2, mousey2));
+            }
+
+            cantidadClicks = 0;
         }
-        
-        if(cantidadClicks==0)
-        {  
-            int hacerAlgo=JOptionPane.showConfirmDialog(null,"Desea hacer algo","Frame Grafico",JOptionPane.YES_NO_OPTION);
-            
-            if (hacerAlgo==JOptionPane.YES_OPTION) 
-            {
-                String opcion=JOptionPane.showInputDialog("Menu\n" + "1. Crear Automata\n 2. Crear estado \n 3.agregar Simbolo \n 4.Crear Transicion \n 5. Cancelar ");
-                String menuNombreAt="";
-                String menuTipoAut="";
-                String menuLenguaje="";
-                String menuEstados="";
-                String menuEstadosAceptadores="";
+
+        if (cantidadClicks == 0) {
+            int hacerAlgo = JOptionPane.showConfirmDialog(null, "Desea hacer algo", "Frame Grafico", JOptionPane.YES_NO_OPTION);
+
+            if (hacerAlgo == JOptionPane.YES_OPTION) {
+                String opcion = JOptionPane.showInputDialog("Menu\n" + "1. Crear Automata\n 2. Crear estado \n 3.agregar Simbolo \n 4.Crear Transicion \n 5. Cancelar ");
+                String menuNombreAt = "";
+                String menuTipoAut = "";
+                String menuLenguaje = "";
+                String menuEstados = "";
+                String menuEstadosAceptadores = "";
                 int esAcpetador;
 
+                if (opcion.equals("1")) {
+                    menuNombreAt = JOptionPane.showInputDialog("Crear automta\n" + "Ingrese nombre automata");
+                    menuTipoAut = JOptionPane.showInputDialog("Crear automta\n" + "Ingrese tipo automata\n 1.AFD\n 2. AFND\n 3.AFND_E");
+                    menuEstados = JOptionPane.showInputDialog("Crear automta\n" + "Ingrese estado  inicial \",\"");
+                    esAcpetador = JOptionPane.showConfirmDialog(null, "el estado inicial agregado es aceptador", "crear Automata", JOptionPane.YES_NO_OPTION);
 
-                 if (opcion.equals("1")) 
-                 {
-                     menuNombreAt=JOptionPane.showInputDialog("Crear automta\n"+"Ingrese nombre automata");
-                     menuTipoAut=JOptionPane.showInputDialog("Crear automta\n"+"Ingrese tipo automata\n 1.AFD\n 2. AFND\n 3.AFND_E");
-                     menuEstados=JOptionPane.showInputDialog("Crear automta\n"+"Ingrese estado  inicial \",\"");
-                     esAcpetador= JOptionPane.showConfirmDialog(null,"el estado inicial agregado es aceptador","crear Automata",JOptionPane.YES_NO_OPTION);
+                    //menuLenguaje=JOptionPane.showInputDialog("Crear automta\n"+"Ingrese lenguaje");
+                    if (esAcpetador == JOptionPane.YES_OPTION) {
+                        menuEstadosAceptadores = menuEstados;
+                    }
 
+                    ///coger las posiciones de estado agregado
+                    if (menuTipoAut.equals("1")) {
+                        mcl.crearAutomaatAFD_O_AFN(menuNombreAt + "", "AFD", menuEstados + "", "", menuEstados + "", menuEstadosAceptadores + "");
+                    }
+                    if (menuTipoAut.equals("2")) {
+                        mcl.crearAutomaatAFD_O_AFN(menuNombreAt + "", "AFND", menuEstados + "", "", menuEstados + "", menuEstadosAceptadores + "");
+                    }
+                    if (menuTipoAut.equals("3")) {
+                        mcl.crearAutomaatAFN_E(menuNombreAt + "", "AFND_E", menuEstados + "", "", menuEstados + "", menuEstadosAceptadores + "");
+                    }
 
+                }
+                if (opcion.equals("2")) {
+                    menuEstados = JOptionPane.showInputDialog("Agregar estado\n" + "Ingrese estado ");
 
-                     //menuLenguaje=JOptionPane.showInputDialog("Crear automta\n"+"Ingrese lenguaje");
+                    this.getMousePosition();
 
-                     if (esAcpetador==JOptionPane.YES_OPTION) 
-                     {
-                          menuEstadosAceptadores=menuEstados;
-                     }
+                    esAcpetador = JOptionPane.showConfirmDialog(null, "el estado es aceptador ?", "estados", JOptionPane.YES_NO_OPTION);
 
+                    if (esAcpetador == JOptionPane.YES_OPTION) {
+                        menuEstadosAceptadores = menuEstados;
+                    }
 
-                     ///coger las posiciones de estado agregado
+                    mcl.agregarAlAutomata(jComboBox11.getSelectedItem() + "", menuEstados, "", "", menuEstadosAceptadores);
+                }
+                if (opcion.equals("3")) {
+                    menuLenguaje = JOptionPane.showInputDialog("Agregar estado\n" + "Ingrese simbolos del automata separados \",\"");
 
-                     if (menuTipoAut.equals("1")) 
-                     { 
-                        mcl.crearAutomaatAFD_O_AFN(menuNombreAt+"", "AFD",menuEstados+"" ,"", menuEstados+"",menuEstadosAceptadores+"");      
-                     }
-                     if (menuTipoAut.equals("2")) 
-                     {
-                         mcl.crearAutomaatAFD_O_AFN(menuNombreAt+"", "AFND",menuEstados+"" ,"", menuEstados+"",menuEstadosAceptadores+"");
-                     }
-                     if (menuTipoAut.equals("3")) 
-                     {
-                         mcl.crearAutomaatAFN_E(menuNombreAt+"", "AFND_E",menuEstados+"" ,"", menuEstados+"",menuEstadosAceptadores+"");
-                     }
+                    mcl.agregarAlAutomata(jComboBox11.getSelectedItem() + "", "", menuLenguaje, "", "");
 
-                 }
-                 if (opcion.equals("2")) 
-                 {
-                     menuEstados=JOptionPane.showInputDialog("Agregar estado\n"+"Ingrese estado ");
+                }
+                if (opcion.equals("4")) {
+                    mousex1 = evt.getX();
+                    mousey1 = evt.getY();
 
-                     this.getMousePosition();
-
-                     esAcpetador= JOptionPane.showConfirmDialog(null,"el estado es aceptador ?","estados",JOptionPane.YES_NO_OPTION);
-
-                     if (esAcpetador==JOptionPane.YES_OPTION) 
-                     {
-                          menuEstadosAceptadores=menuEstados;
-                     }
-
-                     mcl.agregarAlAutomata(jComboBox11.getSelectedItem()+ "", menuEstados, "", "", menuEstadosAceptadores);
-                 }
-                 if (opcion.equals("3")) 
-                 {
-                     menuLenguaje=JOptionPane.showInputDialog("Agregar estado\n"+"Ingrese simbolos del automata separados \",\"");
-
-                      mcl.agregarAlAutomata(jComboBox11.getSelectedItem()+ "", "", menuLenguaje, "", "");
-
-                 }
-                 if (opcion.equals("4")) 
-                 {
-                      mousex1=evt.getX();
-                      mousey1=evt.getY();
-
-                      //metodo para buscar la posicion del estado 
-
-                     cantidadClicks++;
-                 }
-                 if (opcion.equals("5")) 
-                 {
-                     JOptionPane.getRootFrame().dispose();  
-                 } 
+                    //metodo para buscar la posicion del estado 
+                    cantidadClicks++;
+                }
+                if (opcion.equals("5")) {
+                    JOptionPane.getRootFrame().dispose();
+                }
+            } else {
+                JOptionPane.getRootFrame().dispose();
             }
-            else{
-                JOptionPane.getRootFrame().dispose();   
-            }
-           
+
         }
-        
-        
-      
-        
+
         this.metodoComboBox();
-        
+
     }//GEN-LAST:event_panel2MouseClicked
 
-    
-    
+
     private void jComboBox11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox11ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox11ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        mcl.afndAafd(jComboBox4.getSelectedItem() + "");
+        metodoComboBox();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        mcl.agregarPorTabla(btnSeleccionarAutomataTabla.getSelectedItem() + "", jTable1);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 //    public void puntoMouse(Label label) {
 //        Point point = MouseInfo.getPointerInfo().getLocation();
@@ -1389,7 +1460,6 @@ public class Frame extends javax.swing.JFrame {
 //        x=evt.getX();
 //        y=evt.getY();
 //    }
-
     public void metodoComboBox() {
         cbSeleccionarAutomata.removeAllItems();
         cbQuintupla.removeAllItems();
@@ -1426,21 +1496,17 @@ public class Frame extends javax.swing.JFrame {
 
         }
     }
-    
-    public String rentornarEstadoXY(Automata aut,int x,int y)
-    {
-        for (int i = 0; i < aut.getEstados().size(); i++) 
-        {
-            if (x>=aut.getEstados().get(i).getX()&&x<=aut.getEstados().get(i).getX()+40) 
-            {
-                if (y>=aut.getEstados().get(i).getY()&&y<=aut.getEstados().get(i).getY()+40) 
-                {
-                     System.out.println("estado encontrado"+aut.getEstados().get(i).getNombre());
+
+    public String rentornarEstadoXY(Automata aut, int x, int y) {
+        for (int i = 0; i < aut.getEstados().size(); i++) {
+            if (x >= aut.getEstados().get(i).getX() && x <= aut.getEstados().get(i).getX() + 40) {
+                if (y >= aut.getEstados().get(i).getY() && y <= aut.getEstados().get(i).getY() + 40) {
+                    System.out.println("estado encontrado" + aut.getEstados().get(i).getNombre());
                     return aut.getEstados().get(i).getNombre();
-                }  
+                }
             }
         }
-        
+
         return "";
     }
 
@@ -1494,6 +1560,7 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JComboBox cbQuintupla;
     private javax.swing.JComboBox cbReversaAutomata;
     private javax.swing.JComboBox cbSeleccionarAutomata;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
@@ -1520,6 +1587,8 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField11;

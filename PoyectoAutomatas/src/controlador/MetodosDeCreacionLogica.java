@@ -7,10 +7,12 @@ package controlador;
 
 import com.sun.org.apache.bcel.internal.generic.ATHROW;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import modelo.Automata;
 import modelo.Estado;
 import modelo.Transicion;
@@ -2161,6 +2163,302 @@ public class MetodosDeCreacionLogica implements java.io.Serializable {
                 System.out.println("lenguajes no concuerdan");
             }
         }
+        
+        // AQUI
+        
+        
+        
+    public void afndAafd(String NautomataUno) {
+
+        Automata automata = devolverAutomata(NautomataUno);
+        LinkedList<String> estadosNuevos = new LinkedList<>();
+        String[][] matrizEstados = new String[1][automata.getLenguaje().size()];
+        String transiciones = "";
+        int contador = 0;
+        boolean variable = true;
+        String transicionesOrdenadas = "";
+        String lenguaje = "";
+        String estadoInicial = automata.getEstadoInicial().getNombre();
+
+        estadosNuevos.add(automata.getEstadoInicial().getNombre());
+
+        do {
+            for (int i = 0; i < automata.getLenguaje().size(); i++) {
+                transiciones = trancionesEstado(automata.getNombre(), estadosNuevos.get(contador), automata.getLenguaje().get(i));
+                if (transiciones != "") {
+                    System.out.println("Transiciones: " + transiciones + " Estado: " + estadosNuevos.get(contador) + " Lenguaje: " + automata.getLenguaje().get(i));
+                    transicionesOrdenadas = ordenarEstadosTransiciones(transiciones);
+                    System.out.println("transiciones ordenadas: " + transicionesOrdenadas);
+                    if (esNuevo(estadosNuevos, transiciones)) {
+                        System.out.println("Es nuevo la transicion: " + transiciones);
+                        estadosNuevos.add(transiciones);
+
+                    } else {
+                        System.out.println("No es nueva la transicion: " + transiciones);
+                    }
+                    matrizEstados = redimencionarMatriz(matrizEstados, estadosNuevos.size(), automata.getLenguaje().size());
+                    matrizEstados[contador][i] = transiciones;
+                    System.out.println("________________________________________________");
+                }
+            }
+
+            contador++;
+        } while (contador <= estadosNuevos.size() - 1);
+
+        for (int i = 0; i < automata.getLenguaje().size(); i++) {
+            lenguaje += automata.getLenguaje().get(i) + ",";
+        }
+
+        String aceptadores = devolverAceptadores(NautomataUno, estadosNuevos);
+        afndAafdCrear(NautomataUno, estadosNuevos, matrizEstados, aceptadores, lenguaje, estadoInicial, automata.getLenguaje());
+
+    }
+
+    public String devolverAceptadores(String nombreAutomata, LinkedList<String> estados) {
+        String aceptadores = "";
+        for (int i = 0; i < automatas.size(); i++) {
+            if (automatas.get(i).getNombre().equals(nombreAutomata)) {
+                for (int j = 0; j < automatas.get(i).getEstadoAceptador().size(); j++) {
+                    aceptadores += automatas.get(i).getEstadoAceptador().get(j).getNombre() + "-,";
+                }
+            }
+        }
+        String estadosNuevos = "";
+        for (int i = 0; i < estados.size(); i++) {
+            estadosNuevos += estados.get(i) + ",";
+        }
+        String acep = "";
+        String[] vectorUno = new String[aceptadores.length()];
+        vectorUno = aceptadores.split(",");
+        String[] vectorDos = new String[estadosNuevos.length()];
+        vectorDos = estadosNuevos.split(",");
+
+        for (int i = 0; i < vectorUno.length; i++) {
+            for (int j = 0; j < vectorDos.length; j++) {
+
+                String[] vectorTres = new String[vectorDos[j].length()];
+                vectorTres = vectorDos[j].split("-");
+                for (int k = 0; k < vectorTres.length; k++) {
+
+                    if (vectorUno[i].equals(vectorTres[k] + "-")) {
+                        //System.out.println("Aceptador"+vectorDos[j]);
+                        System.out.println("_____________________" + contieneDos(acep, vectorTres[k] + "-"));
+                        if (contieneDos(acep, vectorDos[j]) == false) {
+                            acep += vectorDos[j] + ",";
+                        }
+
+                    }
+                    //System.out.println("Vector tres: "+vectorTres[k]+" k: "+k);
+                }
+            }
+        }
+
+        return acep;
+    }
+
+    public boolean contieneDos(String acep, String aceptador) {
+        String[] vec1 = new String[acep.length()];
+        vec1 = acep.split(",");
+
+        for (int i = 0; i < vec1.length; i++) {
+            if (vec1[i].equals(aceptador)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void afndAafdCrear(String nombreAutomata, LinkedList<String> estados, String[][] matrizTransiciones, String aceptadores, String lenguaje, String estadoInicial, LinkedList<String> lenguajeVec) {
+        //para sacar los estados e una variable String
+        String estadosNuevos = "";
+        String inicialEstado = "";
+        for (int i = 0; i < estados.size(); i++) {
+            if (estadosNuevos.equals("")) {
+                estadosNuevos += estados.get(i) + "-,";
+                inicialEstado = estados.get(i) + "-";
+                System.out.println("Inicial estdo" + inicialEstado);
+
+            } else {
+                estadosNuevos += estados.get(i) + ",";
+            }
+        }
+
+        String AceptadoresFinales = "";
+
+        System.out.println("Nombre automata: " + nombreAutomata + "_Det" + " estados: " + estadosNuevos + " Aceptador: " + aceptadores + " lenguaje: " + lenguaje + " Estado inicial: " + inicialEstado);
+        estados.set(0, inicialEstado);
+        crearAutomaatAFD_O_AFN(nombreAutomata + "_Det", "AFD", estadosNuevos, lenguaje, inicialEstado, aceptadores);
+
+        for (int i = 0; i < estados.size(); i++) {
+            for (int j = 0; j < lenguajeVec.size(); j++) {
+                //System.out.println("Nombre: " + nombreAutomata + "_Det" + " estado A: " + estados.get(i) + " lenguaje: " + lenguajeVec.get(j) + " estado B: " + matrizTransiciones[i][j]);
+                if (matrizTransiciones[i][j] != null) {
+                    agregarTransicionAFD(nombreAutomata + "_Det", estados.get(i), lenguajeVec.get(j), matrizTransiciones[i][j] + "");
+                }
+
+            }
+
+        }
+
+    }
+
+    public String[][] redimencionarMatriz(String[][] matrizUno, int x, int y) {
+        String[][] matriz = new String[x][y];
+        for (int i = 0; i < matrizUno.length; i++) {
+            for (int j = 0; j < matrizUno[0].length; j++) {
+                matriz[i][j] = matrizUno[i][j];
+            }
+        }
+        return matriz;
+    }
+
+    public boolean esNuevo(LinkedList<String> listaEstadosVerificar, String transiciones) {
+        //System.out.println("Verificacion de transicion"+transiciones);
+        boolean nuevo = true;
+        String primero = listaEstadosVerificar.get(0) + "-";
+        for (int i = 0; i < listaEstadosVerificar.size(); i++) {
+            if (i == 0) {
+                if (primero.equals(transiciones)) {
+                    return false;
+                }
+            } else if (listaEstadosVerificar.get(i).equals(transiciones)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public String trancionesEstado(String nombreAutomata, String estado, String simbolo) {
+        String prueba = "";
+        String[] vectorEstados = new String[estado.length()];
+        vectorEstados = estado.split("-");
+//        System.out.println("kasfdsslñdskafskñd{aflsgñfsld{dsafsslkgadjg: "+vectorEstados.length);
+
+//        for (int i = 0; i < vectorEstados.length; i++) {
+//            System.out.println("Vector estaods: "+vectorEstados[i]);
+//        }
+        for (int i = 0; i < automatas.size(); i++) {
+            if (automatas.get(i).getNombre().equals(nombreAutomata)) {
+                for (int j = 0; j < automatas.get(i).getTransiciones().size(); j++) {
+                    for (int k = 0; k < vectorEstados.length; k++) {
+                        if (automatas.get(i).getTransiciones().get(j).getSimbolo().equals(simbolo) && automatas.get(i).getTransiciones().get(j).getEstadoA().getNombre().equals(vectorEstados[k])) {
+//                            System.out.println("Comparar: simbolo: "+automatas.get(i).getTransiciones().get(j).getSimbolo()+" con:"+simbolo+" comparar estado A: "+automatas.get(i).getTransiciones().get(j).getEstadoA().getNombre()+" con: "+vectorEstados[k]);
+//                            System.out.println("for de transiciones"+j+" for de vector estados: "+k);
+                            String[] vector = new String[prueba.length()];
+                            vector = prueba.split("-");
+//                            for (int l = 0; l < vector.length; l++) {
+//                                System.out.println("vector: "+vector[l]);
+//                            }
+
+//                            System.out.println("boolean: "+contiene(vector, vectorEstados[k]));
+                            if (contiene(vector, automatas.get(i).getTransiciones().get(j).getEstadoB().getNombre()) == false) {
+                                prueba += automatas.get(i).getTransiciones().get(j).getEstadoB().getNombre() + "-";
+                                //System.out.println("Pruba temporal: "+prueba+" vector: "+vector+" vector[k]+"+vector[k]);
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+        return prueba;
+    }
+
+    public boolean contiene(String[] vector, String estado) {
+        for (int i = 0; i < vector.length; i++) {
+            if (vector[i].equals(estado)) {
+                //System.out.println("Vector[i]"+vector[i]+" estado: "+estado);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String ordenarEstadosTransiciones(String estados) {
+        String[] letras = new String[estados.length()];
+        String letrasOrdenadas = "";
+
+        letras = estados.split("-");
+
+        Arrays.sort(letras);
+
+        for (int i = 0; i < letras.length; i++) {
+            letrasOrdenadas += letras[i] + "-";
+        }
+
+        return letrasOrdenadas;
+    }
+
+    public boolean esAcptador(Automata aut, String estado) {
+        for (int i = 0; i < aut.getEstadoAceptador().size(); i++) {
+            if (aut.getEstadoAceptador().get(i).getNombre().equals(estado)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void agregarPorTabla(String nombreAutmata, JTable tabla) {
+
+        Automata automata = devolverAutomata(nombreAutmata);
+
+        for (int i = 0; i < tabla.getRowCount(); i++) {
+            if (tabla.getValueAt(i, 1) != null) {
+                if (!existeEstado(automata, tabla.getValueAt(i, 1) + "")) {
+                    agregarAlAutomata(automata.getNombre(), tabla.getValueAt(i, 1) + "", "", "", "");
+                    System.out.println("estado nuevo es: " + tabla.getValueAt(i, 1));
+                }
+            }
+        }
+        for (int i = 2; i < tabla.getColumnCount(); i++) {
+            for (int j = 0; j < tabla.getRowCount(); j++) {
+
+                if (tabla.getValueAt(j, i) != null) {
+
+                    String cadena = tabla.getValueAt(j, i) + "";
+                    String[] vect = cadena.split(",");
+                    
+                    for (int k = 0; k < vect.length; k++) {
+
+                        if (existeEstado(automata, vect[k])) {
+                            if (!existeTransicion(automata, tabla.getValueAt(j, 1) + "", automata.getLenguaje().get(i - 2) + "", vect[k])) {
+
+                                if (automata.getTipoAutomata().equals("AFD")) {
+                                    //System.out.println("Nueva transicion: nombre: "+nombreAutmata+" A: "+tabla.getValueAt(j, 1)+" Simbolo: "+automata.getLenguaje().get(i - 2)+" B: "+vect[k]);
+                                    agregarTransicionAFD(nombreAutmata, tabla.getValueAt(j, 1) + "", automata.getLenguaje().get(i - 2) + "", vect[k]);
+                                } else {
+                                    agregarTransicionAFN_O_AFNE(nombreAutmata, tabla.getValueAt(j, 1) + "", automata.getLenguaje().get(i - 2) + "", vect[k]);
+                                }
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(new Frame(), "Debe ingresar un estado existente.");
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    public boolean existeTransicion(Automata aut, String a, String simbolo, String b) {
+        //System.out.println("a: " + a + " simbolo: " + simbolo + " b: " + b);
+        for (int i = 0; i < aut.getTransiciones().size(); i++) {
+            if (aut.getTransiciones().get(i).getEstadoA().getNombre().equals(a) && aut.getTransiciones().get(i).getSimbolo().equals(simbolo) && aut.getTransiciones().get(i).getEstadoB().getNombre().equals(b)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existeEstado(Automata automata, String estado) {
+        for (int i = 0; i < automata.getEstados().size(); i++) {
+
+            if (automata.getEstados().get(i).getNombre().equals(estado) || estado.equals(null)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 ///fin de la clase MetodosDeCreacionLogica
